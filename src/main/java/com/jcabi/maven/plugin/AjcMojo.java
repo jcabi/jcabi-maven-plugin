@@ -30,7 +30,6 @@
 package com.jcabi.maven.plugin;
 
 import com.google.common.io.Files;
-import com.jcabi.aether.Classpath;
 import com.jcabi.aspects.Cacheable;
 import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
@@ -47,17 +46,29 @@ import lombok.ToString;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.dependency.graph.DependencyGraphBuilder;
+import org.apache.maven.shared.dependency.graph.DependencyGraphBuilderException;
+import org.apache.maven.shared.dependency.graph.DependencyNode;
+import org.apache.maven.shared.dependency.graph.internal.DefaultDependencyGraphBuilder;
 import org.aspectj.bridge.IMessage;
 import org.aspectj.bridge.IMessageHolder;
 import org.aspectj.tools.ajc.Main;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.jfrog.maven.annomojo.annotations.MojoGoal;
 import org.jfrog.maven.annomojo.annotations.MojoParameter;
 import org.jfrog.maven.annomojo.annotations.MojoPhase;
 import org.slf4j.impl.StaticLoggerBinder;
-import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.util.artifact.JavaScopes;
 
 /**
@@ -74,7 +85,7 @@ import org.sonatype.aether.util.artifact.JavaScopes;
 @EqualsAndHashCode(callSuper = false, of = { "project", "scopes" })
 @Loggable(Loggable.DEBUG)
 @SuppressWarnings({ "PMD.TooManyMethods", "PMD.ExcessiveImports" })
-public final class AjcMojo extends AbstractMojo {
+public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**
      * Classpath separator.
@@ -95,11 +106,11 @@ public final class AjcMojo extends AbstractMojo {
      * Maven project.
      */
     @MojoParameter(
-        expression = "${repositorySystemSession}",
+        expression = "${session}",
         required = true,
         readonly = true
     )
-    private transient RepositorySystemSession session;
+    private transient MavenSession session;
 
     /**
      * Compiled directory.
@@ -142,6 +153,11 @@ public final class AjcMojo extends AbstractMojo {
         description = "Scopes with aspects and libraries"
     )
     private transient String[] scopes;
+
+    /**
+     * Container.
+     */
+    private transient PlexusContainer container;
 
     /**
      * {@inheritDoc}
@@ -219,22 +235,98 @@ public final class AjcMojo extends AbstractMojo {
         trim = false
     )
     private Collection<File> classpath() {
-        Collection<String> scps;
+        final Collection<String> scps;
         if (this.scopes == null) {
+            scps = this.scope();
+        } else {
+            scps = Arrays.asList(this.scopes);
+        }
+        final Collection<File> files = new LinkedList<File>();
+        try {
+            final DependencyGraphBuilder builder =
+                (DefaultDependencyGraphBuilder) this.container.lookup(
+                    DependencyGraphBuilder.class.getCanonicalName(),
+                    "default"
+                );
+            final DependencyNode node = builder.buildDependencyGraph(
+                this.project,
+                new ArtifactFilter() {
+                    @Override
+                    public boolean include(final Artifact artifact) {
+                        return scps.contains(artifact.getScope());
+                    }
+                }
+            );
+            files.addAll(this.dependencies(node, scps));
+        } catch (DependencyGraphBuilderException ex) {
+            throw new IllegalStateException(ex);
+        } catch (ComponentLookupException ex) {
+            throw new IllegalStateException(ex);
+        }
+        return files;
+    }
+
+    /**
+     * Retrieve dependencies for from given node and scope.
+     * @param node Node to traverse.
+     * @param scps Scopes to use.
+     * @return Collection of dependency files.
+     */
+    private Collection<File> dependencies(final DependencyNode node,
+        final Collection<String> scps) {
+        final Artifact artifact = node.getArtifact();
+        final Collection<File> files = new LinkedList<File>();
+        if ((artifact.getScope() == null)
+            || scps.contains(artifact.getScope())) {
+            files.add(
+                this.session.getLocalRepository().find(artifact).getFile()
+            );
+            for (DependencyNode child : node.getChildren()) {
+                if (child.getArtifact().compareTo(node.getArtifact()) != 0) {
+                    files.addAll(this.dependencies(child, scps));
+                }
+            }
+        }
+        return files;
+    }
+
+    /**
+     * Default scopes.
+     * @return List of scopes.
+     */
+    private List<String> scope() {
+        final List<String> scps;
+        if (this.eclipseAether()) {
+            scps = Arrays.asList(
+                org.eclipse.aether.util.artifact.JavaScopes.COMPILE,
+                org.eclipse.aether.util.artifact.JavaScopes.PROVIDED,
+                org.eclipse.aether.util.artifact.JavaScopes.RUNTIME,
+                org.eclipse.aether.util.artifact.JavaScopes.SYSTEM
+            );
+        } else {
             scps = Arrays.asList(
                 JavaScopes.COMPILE,
                 JavaScopes.PROVIDED,
                 JavaScopes.RUNTIME,
                 JavaScopes.SYSTEM
             );
-        } else {
-            scps = Arrays.asList(this.scopes);
         }
-        return new Classpath(
-            this.project,
-            this.session.getLocalRepository().getBasedir(),
-            scps
-        );
+        return scps;
+    }
+
+    /**
+     * If environment is inside Eclipse Aether.
+     * @return True if Eclipse Aether.
+     */
+    private boolean eclipseAether() {
+        boolean found = false;
+        try {
+            Thread.currentThread().getContextClassLoader()
+                .loadClass("org.sonatype.aether.graph.DependencyFilter");
+        } catch (ClassNotFoundException ex) {
+            found = true;
+        }
+        return found;
     }
 
     /**
@@ -289,6 +381,15 @@ public final class AjcMojo extends AbstractMojo {
             }
         }
         return files;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void contextualize(final Context context) throws ContextException {
+        this.container = (PlexusContainer) context
+            .get(PlexusConstants.PLEXUS_KEY);
     }
 
     /**

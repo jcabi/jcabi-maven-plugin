@@ -77,11 +77,6 @@
         </dependency>
         <dependency>
             <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-aether</artifactId>
-            <version>0.8</version>
-        </dependency>
-        <dependency>
-            <groupId>com.jcabi</groupId>
             <artifactId>jcabi-aspects</artifactId>
             <version>0.10</version>
         </dependency>
@@ -90,6 +85,11 @@
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-maven-slf4j</artifactId>
             <version>0.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.shared</groupId>
+            <artifactId>maven-dependency-tree</artifactId>
+            <version>2.1</version>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
@@ -144,6 +144,7 @@
             <groupId>org.sonatype.sisu</groupId>
             <artifactId>sisu-guava</artifactId>
             <version>0.11.1</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugin-testing</groupId>
@@ -158,6 +159,41 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-artifact</artifactId>
+            <version>${maven.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-container-default</artifactId>
+            <version>1.5.5</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.collections</groupId>
+                    <artifactId>google-collections</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.sonatype.sisu</groupId>
+            <artifactId>sisu-inject-plexus</artifactId>
+            <version>${sisu.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-project</artifactId>
+            <version>2.2.0</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.maven</groupId>
+                    <artifactId>maven-artifact-manager</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <build>
@@ -229,6 +265,7 @@
                                 <!-- see https://github.com/jcaddel/maven-s3-wagon/issues/6 -->
                                 <ignoredResource>mime.types</ignoredResource>
                                 <ignoredResource>plugin.xml</ignoredResource>
+                                <ignoredResource>about.html</ignoredResource>
                             </ignoredResources>
                             <ignoredDependencies combine.children="append">
                                 <dependency>
@@ -240,6 +277,21 @@
                                     <groupId>org.aspectj</groupId>
                                     <artifactId>aspectjtools</artifactId>
                                     <version>1.7.3</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>org.sonatype.sisu</groupId>
+                                    <artifactId>sisu-inject-plexus</artifactId>
+                                    <version>${sisu.version}</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>org.apache.maven</groupId>
+                                    <artifactId>maven-project</artifactId>
+                                    <version>2.2.0</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>com.google.guava</groupId>
+                                    <artifactId>guava</artifactId>
+                                    <version>14.0.1</version>
                                 </dependency>
                             </ignoredDependencies>
                         </configuration>
