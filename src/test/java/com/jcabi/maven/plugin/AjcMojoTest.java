@@ -52,8 +52,8 @@ import org.sonatype.aether.repository.LocalRepository;
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @todo #2 Test disabledTestClassFilesWeaving should be refactored to support
- *  changes in AjsMojo, dummy test() and tearDown() should be removed when
- *  the weaving tests starts working.
+ *  changes in AjcMojo, dummy test() and tearDown() should be removed when
+ *  the weaving test starts working.
  */
 public final class AjcMojoTest extends AbstractMojoTestCase {
 
