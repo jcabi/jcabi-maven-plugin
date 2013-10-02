@@ -278,9 +278,13 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         final Collection<File> files = new LinkedList<File>();
         if ((artifact.getScope() == null)
             || scps.contains(artifact.getScope())) {
-            files.add(
-                this.session.getLocalRepository().find(artifact).getFile()
-            );
+            if (artifact.getScope() == null) {
+                files.add(artifact.getFile());
+            } else {
+                files.add(
+                    this.session.getLocalRepository().find(artifact).getFile()
+                );
+            }
             for (DependencyNode child : node.getChildren()) {
                 if (child.getArtifact().compareTo(node.getArtifact()) != 0) {
                     files.addAll(this.dependencies(child, scps));
