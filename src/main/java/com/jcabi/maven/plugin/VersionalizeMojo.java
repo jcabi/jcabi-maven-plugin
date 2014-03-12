@@ -46,6 +46,7 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
@@ -166,7 +167,8 @@ public final class VersionalizeMojo extends AbstractMojo {
             }
             final File ddir = new File(
                 dest,
-                dir.getCanonicalPath().substring(
+                StringUtils.substring(
+                    dir.getCanonicalPath(),
                     src.getCanonicalPath().length() + 1
                 )
             );
