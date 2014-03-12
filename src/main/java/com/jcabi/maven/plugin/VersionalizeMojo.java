@@ -49,10 +49,11 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.jfrog.maven.annomojo.annotations.MojoGoal;
-import org.jfrog.maven.annomojo.annotations.MojoParameter;
-import org.jfrog.maven.annomojo.annotations.MojoPhase;
 import org.slf4j.impl.StaticLoggerBinder;
 
 /**
@@ -62,8 +63,7 @@ import org.slf4j.impl.StaticLoggerBinder;
  * @version $Id$
  * @since 0.7.16
  */
-@MojoGoal("versionalize")
-@MojoPhase("prepare-package")
+@Mojo(name = "versionalize", defaultPhase = LifecyclePhase.PREPARE_PACKAGE)
 @ToString
 @EqualsAndHashCode(callSuper = false)
 @Loggable(Loggable.DEBUG)
@@ -73,28 +73,20 @@ public final class VersionalizeMojo extends AbstractMojo {
     /**
      * Maven project.
      */
-    @MojoParameter(
-        expression = "${project}",
-        required = true,
-        readonly = true,
-        description = "Maven project"
-    )
+    @Component
     private transient MavenProject project;
 
     /**
      * Build number.
+     * @checkstyle MemberNameCheck (10 lines)
      */
-    @MojoParameter(
-        expression = "${buildNumber}",
+    @Parameter(
+        property = "buildNumber",
         required = false,
-        readonly = false,
-        description = "Build number"
+        readonly = false
     )
     private transient String buildNumber;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Loggable(value = Loggable.DEBUG, limit = 1, unit = TimeUnit.MINUTES)
     public void execute() throws MojoFailureException {
@@ -106,11 +98,13 @@ public final class VersionalizeMojo extends AbstractMojo {
         }
         final File dest =
             new File(this.project.getBuild().getOutputDirectory());
-        dest.mkdirs();
+        if (dest.mkdirs()) {
+            Logger.info(this, "created directory %s", dest);
+        }
         Logger.info(this, "Versionalizing %s directory", dest);
         try {
             this.versionalize(src, dest);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new MojoFailureException("failed to versionalize", ex);
         }
     }
@@ -121,27 +115,27 @@ public final class VersionalizeMojo extends AbstractMojo {
      * @return The text
      */
     private String text(@NotNull final File dir) {
-        final StringBuilder text = new StringBuilder()
-            .append(String.format("Build Number: %s\n", this.buildNumber))
+        final StringBuilder text = new StringBuilder(0)
+            .append(String.format("Build Number: %s%n", this.buildNumber))
             .append(
                 String.format(
-                    "Project Version: %s\n",
+                    "Project Version: %s%n",
                     this.project.getVersion()
                 )
             )
             .append(
                 String.format(
-                    "Build Date: %s\n\n",
+                    "Build Date: %s%n%n",
                     DateFormatUtils.ISO_DATETIME_FORMAT.format(new Date())
                 )
             );
-        for (String name : VersionalizeMojo.files(dir, "*")) {
+        for (final String name : VersionalizeMojo.files(dir, "*")) {
             final File file = new File(dir, name);
             if (file.isFile()) {
                 text.append(name)
                     .append(": ")
                     .append(file.length())
-                    .append("\n");
+                    .append('\n');
             }
         }
         return text.toString();
@@ -166,7 +160,7 @@ public final class VersionalizeMojo extends AbstractMojo {
             VersionalizeMojo.cleanup(this.project.getArtifactId()),
             VersionalizeMojo.cleanup(this.project.getPackaging())
         );
-        for (File dir : dirs) {
+        for (final File dir : dirs) {
             if (VersionalizeMojo.files(dir, "*.java").isEmpty()) {
                 continue;
             }
@@ -177,7 +171,9 @@ public final class VersionalizeMojo extends AbstractMojo {
                 )
             );
             final File version = new File(ddir, name);
-            version.getParentFile().mkdirs();
+            if (version.getParentFile().mkdirs()) {
+                Logger.info(this, "created dir %s", version.getParentFile());
+            }
             FileUtils.write(version, this.text(ddir));
             Logger.info(this, "File %s added", version);
         }
@@ -202,7 +198,7 @@ public final class VersionalizeMojo extends AbstractMojo {
         final FileFilter filter = new WildcardFileFilter(mask);
         final File[] files = dir.listFiles(filter);
         final Collection<String> names = new ArrayList<String>(files.length);
-        for (File file : files) {
+        for (final File file : files) {
             names.add(file.getName());
         }
         return names;

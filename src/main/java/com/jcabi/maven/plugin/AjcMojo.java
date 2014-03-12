@@ -51,11 +51,14 @@ import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.dependency.graph.DependencyGraphBuilder;
 import org.apache.maven.shared.dependency.graph.DependencyGraphBuilderException;
 import org.apache.maven.shared.dependency.graph.DependencyNode;
-import org.apache.maven.shared.dependency.graph.internal.DefaultDependencyGraphBuilder;
 import org.aspectj.bridge.IMessage;
 import org.aspectj.bridge.IMessageHolder;
 import org.aspectj.tools.ajc.Main;
@@ -65,9 +68,6 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
-import org.jfrog.maven.annomojo.annotations.MojoGoal;
-import org.jfrog.maven.annomojo.annotations.MojoParameter;
-import org.jfrog.maven.annomojo.annotations.MojoPhase;
 import org.slf4j.impl.StaticLoggerBinder;
 import org.sonatype.aether.util.artifact.JavaScopes;
 
@@ -79,8 +79,7 @@ import org.sonatype.aether.util.artifact.JavaScopes;
  * @since 0.7.16
  * @link <a href="http://www.eclipse.org/aspectj/doc/next/devguide/ajc-ref.html">AJC compiler manual</a>
  */
-@MojoGoal("ajc")
-@MojoPhase("process-classes")
+@Mojo(name = "ajc", defaultPhase = LifecyclePhase.PROCESS_CLASSES)
 @ToString
 @EqualsAndHashCode(callSuper = false, of = { "project", "scopes" })
 @Loggable(Loggable.DEBUG)
@@ -95,62 +94,53 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
     /**
      * Maven project.
      */
-    @MojoParameter(
-        expression = "${project}",
-        required = true,
-        readonly = true
-    )
+    @Component
     private transient MavenProject project;
 
     /**
      * Maven project.
      */
-    @MojoParameter(
-        expression = "${session}",
-        required = true,
-        readonly = true
-    )
+    @Component
     private transient MavenSession session;
 
     /**
      * Compiled directory.
+     * @checkstyle MemberNameCheck (10 lines)
      */
-    @MojoParameter(
+    @Parameter(
         required = false,
         readonly = false,
-        description = "Directory with compiled .class files",
         defaultValue = "${project.build.outputDirectory}"
     )
     private transient File classesDirectory;
 
     /**
      * Directories with aspects.
+     * @checkstyle MemberNameCheck (10 lines)
      */
-    @MojoParameter(
+    @Parameter(
         required = false,
-        readonly = false,
-        description = "Directories with aspects"
+        readonly = false
     )
     private transient File[] aspectDirectories;
 
     /**
      * Temporary directory.
+     * @checkstyle MemberNameCheck (10 lines)
      */
-    @MojoParameter(
+    @Parameter(
         defaultValue = "${project.build.directory}/jcabi-ajc",
         required = false,
-        readonly = false,
-        description = "Temporary directory for compiled classes"
+        readonly = false
     )
     private transient File tempDirectory;
 
     /**
      * Scopes to take into account.
      */
-    @MojoParameter(
+    @Parameter(
         required = false,
-        readonly = false,
-        description = "Scopes with aspects and libraries"
+        readonly = false
     )
     private transient String[] scopes;
 
@@ -159,15 +149,16 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      */
     private transient PlexusContainer container;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Loggable(value = Loggable.DEBUG, limit = 1, unit = TimeUnit.MINUTES)
     public void execute() throws MojoFailureException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
-        this.classesDirectory.mkdirs();
-        this.tempDirectory.mkdirs();
+        if (this.classesDirectory.mkdirs()) {
+            Logger.info(this, "Created classes dir %s", this.classesDirectory);
+        }
+        if (this.tempDirectory.mkdirs()) {
+            Logger.info(this, "Created temp dir %s", this.tempDirectory);
+        }
         final Main main = new Main();
         final IMessageHolder mholder = new AjcMojo.MsgHolder();
         final String jdk = "1.6";
@@ -207,7 +198,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         );
         try {
             FileUtils.copyDirectory(this.tempDirectory, this.classesDirectory);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new MojoFailureException("failed to copy files back", ex);
         }
         Logger.info(
@@ -244,9 +235,11 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         final Collection<File> files = new LinkedList<File>();
         try {
             final DependencyGraphBuilder builder =
-                (DefaultDependencyGraphBuilder) this.container.lookup(
-                    DependencyGraphBuilder.class.getCanonicalName(),
-                    "default"
+                DependencyGraphBuilder.class.cast(
+                    this.container.lookup(
+                        DependencyGraphBuilder.class.getCanonicalName(),
+                        "default"
+                    )
                 );
             final DependencyNode node = builder.buildDependencyGraph(
                 this.project,
@@ -258,9 +251,9 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
                 }
             );
             files.addAll(this.dependencies(node, scps));
-        } catch (DependencyGraphBuilderException ex) {
+        } catch (final DependencyGraphBuilderException ex) {
             throw new IllegalStateException(ex);
-        } catch (ComponentLookupException ex) {
+        } catch (final ComponentLookupException ex) {
             throw new IllegalStateException(ex);
         }
         return files;
@@ -276,7 +269,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         final Collection<String> scps) {
         final Artifact artifact = node.getArtifact();
         final Collection<File> files = new LinkedList<File>();
-        if ((artifact.getScope() == null)
+        if (artifact.getScope() == null
             || scps.contains(artifact.getScope())) {
             if (artifact.getScope() == null) {
                 files.add(artifact.getFile());
@@ -285,7 +278,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
                     this.session.getLocalRepository().find(artifact).getFile()
                 );
             }
-            for (DependencyNode child : node.getChildren()) {
+            for (final DependencyNode child : node.getChildren()) {
                 if (child.getArtifact().compareTo(node.getArtifact()) != 0) {
                     files.addAll(this.dependencies(child, scps));
                 }
@@ -298,7 +291,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * Default scopes.
      * @return List of scopes.
      */
-    private List<String> scope() {
+    private Collection<String> scope() {
         final List<String> scps;
         if (this.eclipseAether()) {
             scps = Arrays.asList(
@@ -310,8 +303,8 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         } else {
             scps = Arrays.asList(
                 JavaScopes.COMPILE,
-                JavaScopes.PROVIDED,
                 JavaScopes.RUNTIME,
+                JavaScopes.PROVIDED,
                 JavaScopes.SYSTEM
             );
         }
@@ -327,7 +320,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         try {
             Thread.currentThread().getContextClassLoader()
                 .loadClass("org.sonatype.aether.graph.DependencyFilter");
-        } catch (ClassNotFoundException ex) {
+        } catch (final ClassNotFoundException ex) {
             found = true;
         }
         return found;
@@ -339,7 +332,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      */
     @Cacheable(forever = true)
     private String aspectpath() {
-        return new StringBuilder()
+        return new StringBuilder(0)
             .append(StringUtils.join(this.classpath(), AjcMojo.SEP))
             .append(AjcMojo.SEP)
             .append(System.getProperty("java.class.path"))
@@ -352,12 +345,12 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      */
     @Cacheable(forever = true)
     private String sourceroots() {
-        String path;
+        final String path;
         if (this.aspectDirectories == null
             || this.aspectDirectories.length == 0) {
             path = Files.createTempDir().getAbsolutePath();
         } else {
-            for (File dir : this.aspectDirectories) {
+            for (final File dir : this.aspectDirectories) {
                 if (!dir.exists()) {
                     throw new IllegalStateException(
                         String.format("source directory %s is absent", dir)
@@ -379,7 +372,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         final Collection<File> all = FileUtils.listFiles(
             dir, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE
         );
-        for (File file : all) {
+        for (final File file : all) {
             if (file.isFile()) {
                 files.add(file);
             }
@@ -387,9 +380,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         return files;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void contextualize(final Context context) throws ContextException {
         this.container = (PlexusContainer) context
@@ -405,14 +395,11 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
          */
         private final transient Collection<IMessage> messages =
             new CopyOnWriteArrayList<IMessage>();
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean hasAnyMessage(final IMessage.Kind kind,
             final boolean greater) {
             boolean has = false;
-            for (IMessage msg : this.messages) {
+            for (final IMessage msg : this.messages) {
                 has = msg.getKind().equals(kind) || greater
                     && IMessage.Kind.COMPARATOR
                     .compare(msg.getKind(), kind) > 0;
@@ -422,14 +409,11 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
             }
             return has;
         }
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public int numMessages(final IMessage.Kind kind,
             final boolean greater) {
             int num = 0;
-            for (IMessage msg : this.messages) {
+            for (final IMessage msg : this.messages) {
                 final boolean has = msg.getKind().equals(kind) || greater
                     && IMessage.Kind.COMPARATOR
                     .compare(msg.getKind(), kind) > 0;
@@ -439,31 +423,19 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
             }
             return num;
         }
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public IMessage[] getMessages(final IMessage.Kind kind,
             final boolean greater) {
             throw new UnsupportedOperationException();
         }
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public List<IMessage> getUnmodifiableListView() {
             throw new UnsupportedOperationException();
         }
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void clearMessages() {
             throw new UnsupportedOperationException();
         }
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean handleMessage(final IMessage msg) {
             if (msg.getKind().equals(IMessage.ERROR)
@@ -472,33 +444,20 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
                 Logger.error(AjcMojo.class, msg.getMessage());
             } else if (msg.getKind().equals(IMessage.WARNING)) {
                 Logger.warn(AjcMojo.class, msg.getMessage());
-            } else if (msg.getKind().equals(IMessage.WEAVEINFO)) {
-                Logger.debug(AjcMojo.class, msg.getMessage());
-            } else if (msg.getKind().equals(IMessage.INFO)) {
-                Logger.debug(AjcMojo.class, msg.getMessage());
             } else {
                 Logger.debug(AjcMojo.class, msg.getMessage());
             }
             this.messages.add(msg);
             return true;
         }
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean isIgnoring(final IMessage.Kind kind) {
             return false;
         }
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void dontIgnore(final IMessage.Kind kind) {
             assert kind != null;
         }
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void ignore(final IMessage.Kind kind) {
             assert kind != null;
