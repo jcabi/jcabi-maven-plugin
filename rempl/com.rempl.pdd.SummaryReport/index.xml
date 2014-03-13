@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type='text/xsl' href='puzzles.xsl'?><puzzles>
+<puzzle>
+<ticket>1</ticket>
+<file>src/test/java/com/jcabi/maven/plugin/AjcMojoTest.java</file>
+<prefix>     * </prefix>
+<body>The test is disabled because I can't make it working. Let's try to enable it and fix.</body>
+<estimate>0</estimate>
+<lines>72-73</lines>
+<owner>someone</owner>
+</puzzle>
+</puzzles>
