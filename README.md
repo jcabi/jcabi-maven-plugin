@@ -1,6 +1,7 @@
 <img src="http://img.jcabi.com/logo-square.png" width="64px" height="64px" />
  
 [![Build Status](https://travis-ci.org/jcabi/jcabi-maven-plugin.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-maven-plugin)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-maven-plugin)
 
 More details are here: [plugin.jcabi.com](http://plugin.jcabi.com/index.html)
 
