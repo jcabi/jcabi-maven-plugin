@@ -61,7 +61,7 @@ public final class AjcMojoTest extends AbstractMojoTestCase {
     public final transient TemporaryFolder temp = new TemporaryFolder();
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         this.temp.create();
     }
 

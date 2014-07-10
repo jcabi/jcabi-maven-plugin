@@ -83,7 +83,9 @@ import org.sonatype.aether.util.artifact.JavaScopes;
 @ToString
 @EqualsAndHashCode(callSuper = false, of = { "project", "scopes" })
 @Loggable(Loggable.DEBUG)
-@SuppressWarnings({ "PMD.TooManyMethods", "PMD.ExcessiveImports" })
+@SuppressWarnings({
+    "PMD.TooManyMethods", "PMD.ExcessiveImports", "PMD.GodClass"
+})
 public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**
@@ -148,6 +150,12 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * Container.
      */
     private transient PlexusContainer container;
+
+    @Override
+    public void contextualize(final Context context) throws ContextException {
+        this.container = (PlexusContainer) context
+            .get(PlexusConstants.PLEXUS_KEY);
+    }
 
     @Override
     @Loggable(value = Loggable.DEBUG, limit = 1, unit = TimeUnit.MINUTES)
@@ -378,12 +386,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
             }
         }
         return files;
-    }
-
-    @Override
-    public void contextualize(final Context context) throws ContextException {
-        this.container = (PlexusContainer) context
-            .get(PlexusConstants.PLEXUS_KEY);
     }
 
     /**
