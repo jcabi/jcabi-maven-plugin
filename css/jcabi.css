@@ -1,8 +1,7 @@
-@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);
-@import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
-@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
+@import url(http://fonts.googleapis.com/css?family=Maven+Pro:400,500,700);
+@import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono);
 /**
- * Copyright (c) 2012-2013, JCabi.com
+ * Copyright (c) 2012-2014, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,376 +29,249 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-a {
-  color: #2276a4;
-  text-decoration: none;
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: "Maven Pro", sans-serif;
+  font-size: 20px;
+  line-height: 26px;
+  background-color: lightgrey;
+  color: #111111;
 }
-a:hover {
-  color: black;
-}
-a tt {
-  text-decoration: none;
-  display: inline-block;
+@media all and (max-width: 1200px) {
+  body {
+    font-size: 16px;
+    line-height: 20px;
+    background-color: white;
+    padding: 0;
+  }
 }
 
-h1, h2, h3 {
-  font-family: "Ubuntu Condensed", sans-serif;
-  color: black;
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+a:hover {
+  color: gray;
+}
+
+code, tt {
+  background-color: #eeeeee;
+  padding: 0 10px;
+  font-family: "Ubuntu Mono", monospace;
 }
 
 h1 {
-  line-height: 1em;
-  font-size: 2.5em;
+  font-size: 38px;
+  line-height: 38px;
+  font-variant: small-caps;
 }
 
 h2 {
-  font-size: 2em;
-  line-height: 1em;
+  font-size: 34px;
+  line-height: 34px;
+  font-variant: small-caps;
 }
 
 h3 {
-  font-size: 1.6em;
+  font-size: 30px;
+  line-height: 30px;
+  font-variant: small-caps;
 }
 
 pre {
-  background-color: #3f464c;
-  color: #f8f8f8;
-  padding: 1em;
-  font-family: "Source Code Pro", sans-serif;
-  font-size: 1em;
+  border-left: 2px solid gray;
+  margin-left: 20px;
+  color: gray;
+  padding: 20px;
+  font-family: "Ubuntu Mono", monospace;
+  font-size: 18px;
   overflow-x: auto;
-  line-height: 1.3em;
+  line-height: 20px;
 }
-
-#breadcrumbs {
-  list-style: none;
-  padding-left: 0;
-}
-
-#breadcrumbs li {
-  display: inline;
-}
-
-#breadcrumbs li:before {
-  content: ">";
-}
-
-#breadcrumbs li:first-child:before {
-  content: none;
-}
-
-tt {
-  background-color: #eee;
-  padding: 0.05em 0.5em;
-  font-family: 'Source Code Pro', sans-serif;
-  font-weight: 500;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+@media all and (max-width: 1200px) {
+  pre {
+    border-left: 0;
+    margin-left: 0;
+    padding-left: 0;
+  }
 }
 
 table {
   background-color: white;
-  border: 0px;
+  border: 0;
   border-collapse: collapse;
 }
-
-table tr.a {
-  background-color: #FCFCFC;
+table tr .a {
+  background-color: #fcfcfc;
 }
-
-table tr.b {
-  background-color: #FAFAFA;
+table tr .b {
+  background-color: #fafafa;
 }
-
 table th {
-  background-color: #F2F2F2;
-  font-family: "Ubuntu Condensed", sans-serif;
+  background-color: #f2f2f2;
   color: #585858;
-  padding-left: 0.7em;
-  padding-top: 0.7em;
-  padding-bottom: 0.7em;
+  padding-left: 14px;
+  padding-top: 14px;
+  padding-bottom: 14px;
   font-weight: normal;
-  font-size: 1.2em;
   text-align: left;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid #fff;
 }
-
 table td {
   vertical-align: top;
-  padding: 0.7em;
+  padding: 14px;
 }
-
 table td:nth-child(1) {
   width: 30%;
 }
 
-body {
-  margin: 0em;
-  padding: 2em;
-  font-family: "Ubuntu", sans-serif;
-  background-color: #E6E6E6;
-}
-@media all and (min-width: 100px) and (max-width: 599px) {
-  body {
-    padding: 0.2em;
-  }
-}
-@media all and (min-width: 600px) and (max-width: 899px) {
-  body {
-    padding: 0.5em;
-  }
-}
-
-div.page {
+.page {
   margin-left: auto;
   margin-right: auto;
   white-space: nowrap;
+  width: 90%;
 }
-@media all and (min-width: 1200px) and (max-width: 5000px) {
-  div.page {
-    width: 85%;
-  }
-}
-@media all and (min-width: 900px) and (max-width: 1199px) {
-  div.page {
-    width: 100%;
-  }
-}
-@media all and (min-width: 600px) and (max-width: 899px) {
-  div.page {
-    width: 100%;
-  }
-}
-@media all and (min-width: 100px) and (max-width: 599px) {
-  div.page {
+@media all and (max-width: 1200px) {
+  .page {
     width: 100%;
   }
 }
 
-div.menu-section {
+.menu-section {
   vertical-align: top;
   display: inline-block;
+  width: 30%;
 }
-@media all and (min-width: 1200px) and (max-width: 5000px) {
-  div.menu-section {
-    width: 30%;
-  }
-}
-@media all and (min-width: 900px) and (max-width: 1199px) {
-  div.menu-section {
-    width: 30%;
-  }
-}
-@media all and (min-width: 600px) and (max-width: 899px) {
-  div.menu-section {
+@media all and (max-width: 1200px) {
+  .menu-section {
     display: none;
   }
 }
-@media all and (min-width: 100px) and (max-width: 599px) {
-  div.menu-section {
-    display: none;
-  }
-}
-
-div.copyright {
-  font-size: 0.8em;
-}
-
-div.logo-section {
-  margin-bottom: 3em;
-}
-
-div.date {
-  color: lightgray;
-  font-weight: 100;
-}
-@media all and (min-width: 1200px) and (max-width: 5000px) {
-  div.date {
-    position: absolute;
-    right: 0px;
-    top: 40px;
-    float: right;
-  }
-}
-@media all and (min-width: 900px) and (max-width: 1199px) {
-  div.date {
-    position: absolute;
-    right: 0px;
-    top: 40px;
-    float: right;
-  }
-}
-
-div.legal-notes {
-  margin-bottom: 3em;
-  margin-top: 2em;
-  font-weight: 100;
-  color: gray;
-  font-size: 1.1em;
-}
-@media all and (min-width: 600px) and (max-width: 899px) {
-  div.legal-notes {
-    text-align: center;
-    font-size: 1.3em;
-  }
-}
-@media all and (min-width: 100px) and (max-width: 599px) {
-  div.legal-notes {
-    text-align: center;
-    font-size: 1.3em;
-  }
-}
-
-.maven-mobile {
-  display: none;
-}
-
-#content {
-  font-size: 1.1em;
-  font-weight: 400;
-  min-height: 25em;
-  color: gray;
+.menu-section .menu {
   background-color: white;
-  line-height: 1.7em;
-  position: relative;
-  box-sizing: border-box;
+  padding: 40px 20px 20px;
+  margin-right: 20px;
+  font-size: 20px;
+  line-height: 26px;
 }
-@media all and (min-width: 1200px) and (max-width: 5000px) {
-  #content {
-    padding: 3em;
+@media all and (max-width: 1200px) {
+  .menu-section .menu {
+    text-align: center;
   }
 }
-@media all and (min-width: 900px) and (max-width: 1199px) {
-  #content {
-    padding: 3em;
-  }
+.menu-section .menu > li > span {
+  font-variant: small-caps;
 }
-@media all and (min-width: 600px) and (max-width: 899px) {
-  #content {
-    padding: 2em;
-  }
+.menu-section .menu > li > ul {
+  margin-bottom: 20px;
+  border-top: 1px solid lightgrey;
 }
-@media all and (min-width: 100px) and (max-width: 599px) {
-  #content {
-    padding: 1em;
+.menu-section .menu li {
+  font-weight: 700;
+  color: gray;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.menu-section .menu li.active {
+  font-weight: bold;
+}
+.menu-section .menu li ul {
+  list-style: none;
+  padding-left: 10px;
+}
+.menu-section .menu li ul li {
+  color: #111111;
+  font-weight: 400;
+}
+.menu-section .menu li a {
+  text-decoration: none;
+}
+
+.teamed {
+  margin-top: 12px;
+}
+
+.badges {
+  margin-top: 12px;
+  color: gray;
+  list-style: none;
+  padding-left: 0;
+  font-size: 16px;
+}
+.badges li {
+  display: inline;
+  border: 1px solid gray;
+  border-radius: 3px;
+  padding: 4px;
+  margin-right: 12px;
+}
+.badges li.menu-button {
+  display: none;
+  cursor: pointer;
+}
+.badges li.menu-button:hover {
+  background-color: gray;
+  color: white;
+}
+@media all and (max-width: 1200px) {
+  .badges li.menu-button {
+    display: inline;
   }
 }
 
-#right-side {
+.legal-notes {
+  margin-top: 20px;
+  color: gray;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+}
+@media all and (max-width: 1200px) {
+  .legal-notes {
+    display: none;
+  }
+}
+
+.content {
+  background-color: white;
+  position: relative;
+  padding: 60px;
+}
+@media all and (max-width: 1200px) {
+  .content {
+    padding: 20px;
+  }
+}
+
+.fork-me {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 140px;
+  height: 140px;
+}
+
+.right-side {
   white-space: normal;
   display: inline-block;
+  width: 70%;
 }
-@media all and (min-width: 1200px) and (max-width: 5000px) {
-  #right-side {
-    width: 70%;
-  }
-}
-@media all and (min-width: 900px) and (max-width: 1199px) {
-  #right-side {
-    width: 70%;
-  }
-}
-@media all and (min-width: 600px) and (max-width: 899px) {
-  #right-side {
+@media all and (max-width: 1200px) {
+  .right-side {
     width: 100%;
-  }
-}
-@media all and (min-width: 100px) and (max-width: 599px) {
-  #right-side {
-    width: 100%;
-  }
-}
-
-.menu-button {
-  float: right;
-  font-size: 2em;
-  color: #2276A4;
-  display: none;
-}
-@media all and (min-width: 600px) and (max-width: 899px) {
-  .menu-button {
-    display: block;
-  }
-}
-@media all and (min-width: 100px) and (max-width: 599px) {
-  .menu-button {
-    display: block;
-  }
-}
-
-.github-large {
-  display: block;
-}
-@media all and (min-width: 600px) and (max-width: 899px) {
-  .github-large {
-    display: none;
-  }
-}
-@media all and (min-width: 100px) and (max-width: 599px) {
-  .github-large {
-    display: none;
-  }
-}
-
-.github-small {
-  display: none;
-}
-@media all and (min-width: 600px) and (max-width: 899px) {
-  .github-small {
-    display: block;
-  }
-}
-@media all and (min-width: 100px) and (max-width: 599px) {
-  .github-small {
-    display: block;
   }
 }
 
 .mobile-menu {
   display: none;
 }
-@media all and (min-width: 100px) and (max-width: 599px) {
-  .mobile-menu {
-    display: block;
-  }
-}
-@media all and (min-width: 600px) and (max-width: 899px) {
+@media all and (max-width: 1200px) {
   .mobile-menu {
     display: block;
   }
 }
 
-#menu {
-  background-color: white;
-  font-size: 1.2em;
-  margin-top: 1em;
-  margin-right: 1em;
-  padding-top: 1.3em;
-  padding-right: 2em;
-  padding-left: 2em;
-  padding-bottom: 2em;
-  list-style: none;
-}
-#menu li {
-  font-family: "Ubuntu Condensed", sans-serif;
-  font-size: 1.3em;
-  padding-top: 1em;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-#menu li ul {
-  line-height: 1.5em;
-  font-family: "Ubuntu", sans-serif;
-  font-size: 0.6em;
-  padding-left: 0em;
-  font-weight: 400;
-  margin-top: 0.5em;
-}
-#menu li ul li {
-  font-family: "Ubuntu", sans-serif;
-  padding: 0.05em;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+.logo a {
+  border: 0;
 }
