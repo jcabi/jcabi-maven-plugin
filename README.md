@@ -1,5 +1,8 @@
-<img src="http://img.jcabi.com/logo-square.png" width="64px" height="64px" />
- 
+<img src="http://img.jcabi.com/logo-square.svg" width="64px" height="64px" />
+
+[![Made By Teamed.io](http://img.teamed.io/btn.svg)](http://www.teamed.io)
+[![DevOps By Rultor.com](http://www.rultor.com/b/jcabi/jcabi-maven-plugin)](http://www.rultor.com/p/jcabi/jcabi-maven-plugin)
+
 [![Build Status](https://travis-ci.org/jcabi/jcabi-maven-plugin.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-maven-plugin)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-maven-plugin)
 
@@ -9,7 +12,6 @@ More details are here: [plugin.jcabi.com](http://plugin.jcabi.com/index.html)
 
 If you have any questions about the framework, or something doesn't work as expected,
 please [submit an issue here](https://github.com/jcabi/jcabi-maven-plugin/issues/new).
-If you want to discuss, please use our [Google Group](https://groups.google.com/forum/#!forum/jcabi).
 
 ## How to contribute?
 
