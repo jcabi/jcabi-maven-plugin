@@ -86,7 +86,6 @@ public final class AjcMojoTest extends AbstractMojoTestCase {
         this.setVariableValueToObject(mojo, "classesDirectory", classes);
         this.setVariableValueToObject(mojo, "aspectDirectories", new File[0]);
         this.setVariableValueToObject(mojo, "tempDirectory", temps);
-        this.setVariableValueToObject(mojo, "1.6", temps);
         final File java = new File(javas, "sample/Foo.java");
         FileUtils.write(
             java,

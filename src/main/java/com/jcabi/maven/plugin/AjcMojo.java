@@ -150,7 +150,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * JDK version
      */
     @Parameter(
-        defaultValue = "1.7",
+        defaultValue = "1.6",
         required = false,
         readonly = false
     )
