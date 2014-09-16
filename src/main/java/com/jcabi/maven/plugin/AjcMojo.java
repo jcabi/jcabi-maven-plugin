@@ -173,6 +173,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         main.run(
             new String[] {
                 "-Xset:avoidFinal=true",
+                "-Xlint:warning",
                 "-inpath",
                 this.classesDirectory.getAbsolutePath(),
                 "-sourceroots",
