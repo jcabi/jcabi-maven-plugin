@@ -147,6 +147,28 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
     private transient String[] scopes;
 
     /**
+     * Java source version.
+     */
+    @Parameter(
+        required = false,
+        readonly = false,
+        property = "source",
+        defaultValue = "1.6"
+    )
+    private transient String source;
+
+    /**
+     * Java target version.
+     */
+    @Parameter(
+        required = false,
+        readonly = false,
+        property = "target",
+        defaultValue = "1.6"
+    )
+    private transient String target;
+
+    /**
      * Container.
      */
     private transient PlexusContainer container;
@@ -169,7 +191,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         }
         final Main main = new Main();
         final IMessageHolder mholder = new AjcMojo.MsgHolder();
-        final String jdk = "1.6";
         main.run(
             new String[] {
                 "-Xset:avoidFinal=true",
@@ -185,9 +206,9 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
                 "-aspectpath",
                 this.aspectpath(),
                 "-source",
-                jdk,
+                this.source,
                 "-target",
-                jdk,
+                this.target,
                 "-g:none",
                 "-encoding",
                 "UTF-8",
