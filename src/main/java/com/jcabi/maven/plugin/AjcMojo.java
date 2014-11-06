@@ -147,26 +147,26 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
     private transient String[] scopes;
 
     /**
-     * Java source version
+     * Java source version.
      */
     @Parameter(
-	required = false,
-	readonly = false,
-	property = "source",
-	defaultValue = "1.6"
+        required = false,
+        readonly = false,
+        property = "source",
+        defaultValue = "1.6"
     )
-    private transient String javaSourceVersion;
+    private transient String source;
 
     /**
-     * Java target version
+     * Java target version.
      */
     @Parameter(
-	required = false,
-	readonly = false,
-	property = "target",
-	defaultValue = "1.6"
+        required = false,
+        readonly = false,
+        property = "target",
+        defaultValue = "1.6"
     )
-    private transient String javaTargetVersion;
+    private transient String target;
 
     /**
      * Container.
@@ -206,9 +206,9 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
                 "-aspectpath",
                 this.aspectpath(),
                 "-source",
-                this.javaSourceVersion,
+                this.source,
                 "-target",
-                this.javaTargetVersion,
+                this.target,
                 "-g:none",
                 "-encoding",
                 "UTF-8",
