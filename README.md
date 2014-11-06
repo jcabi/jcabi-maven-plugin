@@ -24,3 +24,58 @@ Please run Maven build before submitting a pull request:
 ```
 $ mvn clean install -Pqulice
 ```
+
+## Java 8 Support
+
+There are new two options which you can choose in the pom.xml to setup custom jdk source and target version.
+For example, if you need to add support for java 8 you have to add this lines in you pom:
+```
+<configuration>
+	<source>1.8</source>
+  <target>1.8</target>
+</configuration>
+```
+You have also to indicate a compatible version of aspectj (now the latest compatible is 1.8.3), to do this add these lines
+```
+<dependency>
+	<groupId>org.aspectj</groupId>
+	<artifactId>aspectjrt</artifactId>
+	<version>1.8.3</version>
+</dependency>
+<dependency>
+	<groupId>org.aspectj</groupId>
+	<artifactId>aspectjtools</artifactId>
+  <version>1.8.3</version>
+</dependency>
+```
+At the end you must have these lines in the build section related to jcabi-maven-plugin:
+```
+<plugin>
+	<groupId>com.jcabi</groupId>
+	<artifactId>jcabi-maven-plugin</artifactId>
+	<version>0.10</version>
+	<configuration>
+  	<source>1.8</source>
+  	<target>1.8</target>
+	</configuration>
+	<executions>
+  	<execution>
+	      <goals>
+	  			<goal>ajc</goal>
+      	</goals>
+	  </execution>
+	</executions>
+  <dependencies>
+  	<dependency>
+	    <groupId>org.aspectj</groupId>
+	    <artifactId>aspectjrt</artifactId>
+	    <version>1.8.3</version>
+	  </dependency>
+	  <dependency>
+    	<groupId>org.aspectj</groupId>
+    	<artifactId>aspectjtools</artifactId>
+    	<version>1.8.3</version>
+	  </dependency>
+	</dependencies>
+</plugin>
+```
