@@ -213,6 +213,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
                 "-encoding",
                 "UTF-8",
                 "-time",
+                "-log",
                 "-showWeaveInfo",
                 "-warn:constructorName",
                 "-warn:packageDefaultMethod",
