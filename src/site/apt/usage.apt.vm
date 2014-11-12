@@ -51,7 +51,7 @@ Supplementary Maven plugin for Jcabi Parent POM
      adds plain text files with version information to every Java
      package in your source directory.
 
-  Starting from the version <<<0.10>>> there are two parameters 
+  Starting from the version <<<0.10>>> there are two parameters
   you may setup to select the version of your Java code :
 
    * source
