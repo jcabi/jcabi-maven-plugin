@@ -1,0 +1,84 @@
+ ------
+ Weave your Java 8 classes
+ ------
+ Emiliano Bonassi
+ ------
+ 2014-11-12
+ ------
+
+
+Weave your Java 8 classes
+
+  You have to setup <<<source>>> and <<<target>>> adding these lines
+  in the configuration section of <<<jcabi-maven-plugin>>> in your <<<pom.xml>>>:
+
++--
+<configuration>
+   <source>1.8</source>
+   <target>1.8</target>
+</configuration>
++--
+
+  In addition you must insert as dependency a compatible version of <<<AspectJ>>>,
+  for example the version 1.8.3. To do that, add these lines in the plugin
+  section of <<<jcabi-maven-plugin>>> :
+
++--
+<dependency>
+   <groupId>org.aspectj</groupId>
+   <artifactId>aspectjrt</artifactId>
+   <version>1.8.3</version>
+</dependency>
+<dependency>
+   <groupId>org.aspectj</groupId>
+   <artifactId>aspectjtools</artifactId>
+   <version>1.8.3</version>
+</dependency>
++--
+
+  At the end you will have these lines in the build section of your <<<pom.xml>>>:
+
++--
+<build>
+   [...]
+   <pluginManagement>
+      [...]
+      <plugin>
+         <groupId>com.jcabi</groupId>
+         <artifactId>jcabi-maven-plugin</artifactId>
+         <version>0.10</version>
+         <configuration>
+            <source>1.8</source>
+            <target>1.8</target>
+         </configuration>
+         <executions>
+            <execution>
+               <goals>
+                  [...]
+                  <goal>ajc</goal>
+                  [...]
+               </goals>
+            </execution>
+         </executions>
+         <dependencies>
+            <dependency>
+               <groupId>org.aspectj</groupId>
+               <artifactId>aspectjrt</artifactId>
+               <version>1.8.3</version>
+            </dependency>
+            <dependency>
+               <groupId>org.aspectj</groupId>
+               <artifactId>aspectjtools</artifactId>
+               <version>1.8.3</version>
+            </dependency>
+         </dependencies>
+      </plugin>
+      [...]
+   <pluginManagement>
+   [...]
+</build>
++--
+
+
+
+

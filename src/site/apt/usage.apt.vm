@@ -51,6 +51,17 @@ Supplementary Maven plugin for Jcabi Parent POM
      adds plain text files with version information to every Java
      package in your source directory.
 
+  Starting from the version <<<0.10>>> there are two parameters
+  you may setup to select the version of your Java code :
+
+   * source
+
+   * target
+
+  If you don't setup them, it is assumed that your code is compatible
+  with Java <<<1.6>>>.
+  For Java 8 configuration look the example {{{./example-java8.html}<<<java8>>>}}.
+
 * Cutting Edge Version
 
   If you want to use current version of the product, you can do it with
