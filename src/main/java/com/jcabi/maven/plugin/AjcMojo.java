@@ -173,6 +173,17 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      */
     private transient PlexusContainer container;
 
+    /**
+     * Ajc compiler message log.
+     */
+    @Parameter(
+        required = false,
+        readonly = false,
+        property = "log",
+        defaultValue = "${project.build.outputDirectory}/jcabi-ajc.log"
+    )
+    private transient String log;    
+    
     @Override
     public void contextualize(final Context context) throws ContextException {
         this.container = (PlexusContainer) context
@@ -214,6 +225,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
                 "UTF-8",
                 "-time",
                 "-log",
+                this.log,
                 "-showWeaveInfo",
                 "-warn:constructorName",
                 "-warn:packageDefaultMethod",
