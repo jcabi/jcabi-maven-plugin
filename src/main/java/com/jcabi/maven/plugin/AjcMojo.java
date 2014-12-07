@@ -182,8 +182,8 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         property = "log",
         defaultValue = "${project.build.outputDirectory}/jcabi-ajc.log"
     )
-    private transient String log;    
-    
+    private transient String log;
+
     @Override
     public void contextualize(final Context context) throws ContextException {
         this.container = (PlexusContainer) context
