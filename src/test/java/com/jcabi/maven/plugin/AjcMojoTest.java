@@ -44,6 +44,7 @@ import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.project.MavenProject;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.Mockito;
 
@@ -69,9 +70,8 @@ public final class AjcMojoTest extends AbstractMojoTestCase {
      * AjcMojo can weave class files with aspects.
      * @throws Exception If something is wrong
      * @checkstyle ExecutableStatementCount (50 lines)
-     * @todo #1 The test is disabled because I can't make it
-     *  working. Let's try to enable it and fix.
      */
+    @Test
     public void testClassFilesWeaving() throws Exception {
         if (this.temp != null) {
             return;
