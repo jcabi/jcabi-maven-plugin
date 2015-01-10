@@ -79,7 +79,11 @@ import org.sonatype.aether.util.artifact.JavaScopes;
  * @since 0.7.16
  * @link <a href="http://www.eclipse.org/aspectj/doc/next/devguide/ajc-ref.html">AJC compiler manual</a>
  */
-@Mojo(name = "ajc", defaultPhase = LifecyclePhase.PROCESS_CLASSES)
+@Mojo(
+    name = "ajc",
+    defaultPhase = LifecyclePhase.PROCESS_CLASSES,
+    threadSafe = true
+)
 @ToString
 @EqualsAndHashCode(callSuper = false, of = { "project", "scopes" })
 @Loggable(Loggable.DEBUG)

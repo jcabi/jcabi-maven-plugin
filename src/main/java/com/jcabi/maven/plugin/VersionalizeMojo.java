@@ -64,7 +64,11 @@ import org.slf4j.impl.StaticLoggerBinder;
  * @version $Id$
  * @since 0.7.16
  */
-@Mojo(name = "versionalize", defaultPhase = LifecyclePhase.PREPARE_PACKAGE)
+@Mojo(
+    name = "versionalize",
+    defaultPhase = LifecyclePhase.PREPARE_PACKAGE,
+    threadSafe = true
+)
 @ToString
 @EqualsAndHashCode(callSuper = false)
 @Loggable(Loggable.DEBUG)
