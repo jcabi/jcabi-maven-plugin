@@ -93,3 +93,7 @@ Supplementary Maven plugin for Jcabi Parent POM
   </plugins>
 </build>
 +--
+
+  Note: jcabi-maven-plugin has to have hibernate-validator dependency as in
+  the example to avoid "JSR-303 validator failed to initialize: Unable to instantiate
+  Configuration" warning during build.
