@@ -123,13 +123,13 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">0.12</strong>
+                                    <strong itemprop="version">0.13</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-12-07T04:54:16Z">
+                                    <time itemprop="datePublished" datetime="2015-06-23T08:46:35Z">
                                         
-                                        07-Dec-2014
+                                        23-Jun-2015
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -174,7 +174,7 @@
                                 <img src="http://img.jcabi.com/fork-me.svg" class="fork-me"/>
                             </a>
                                                 <article role="article" itemprop="articleBody">
-                            <!--  --><!-- Copyright (c) 2012-2014, jcabi.com --><!-- All rights reserved. --><!--  --><!-- Redistribution and use in source and binary forms, with or without --><!-- modification, are permitted provided that the following conditions --><!-- are met: 1) Redistributions of source code must retain the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer. 2) Redistributions in binary form must reproduce the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer in the documentation and/or other materials provided --><!-- with the distribution. 3) Neither the name of the jcabi.com nor --><!-- the names of its contributors may be used to endorse or promote --><!-- products derived from this software without specific prior written --><!-- permission. --><!--  --><!-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS --><!-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT --><!-- NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND --><!-- FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL --><!-- THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, --><!-- INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES --><!-- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR --><!-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) --><!-- HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, --><!-- STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) --><!-- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED --><!-- OF THE POSSIBILITY OF SUCH DAMAGE. --><!--  --><div class="section">
+                            <!--  --><!-- Copyright (c) 2012-2015, jcabi.com --><!-- All rights reserved. --><!--  --><!-- Redistribution and use in source and binary forms, with or without --><!-- modification, are permitted provided that the following conditions --><!-- are met: 1) Redistributions of source code must retain the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer. 2) Redistributions in binary form must reproduce the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer in the documentation and/or other materials provided --><!-- with the distribution. 3) Neither the name of the jcabi.com nor --><!-- the names of its contributors may be used to endorse or promote --><!-- products derived from this software without specific prior written --><!-- permission. --><!--  --><!-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS --><!-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT --><!-- NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND --><!-- FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL --><!-- THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, --><!-- INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES --><!-- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR --><!-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) --><!-- HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, --><!-- STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) --><!-- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED --><!-- OF THE POSSIBILITY OF SUCH DAMAGE. --><!--  --><div class="section">
 <h2><a name="Supplementary_Maven_plugin_for_Jcabi_Parent_POM"></a>Supplementary Maven plugin for Jcabi Parent POM</h2>
 <p>It is used in <a href="../parent/index.html"><tt>com.jcabi:parent</tt></a> POM project in order to automate certain build operations.</p>
 <p>You can use it directly, as explained in the examples:</p>
@@ -203,16 +203,25 @@
       &lt;artifactId&gt;jcabi-maven-plugin&lt;/artifactId&gt;
       &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
       [...]
+      &lt;dependencies&gt;
+        &lt;dependency&gt;
+          &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
+          &lt;artifactId&gt;hibernate-validator&lt;/artifactId&gt;
+          &lt;version&gt;5.0.0.Final&lt;/version&gt;
+          &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+      &lt;/dependencies&gt;
     &lt;/plugin&gt;
   &lt;/plugins&gt;
-&lt;/build&gt;</pre></div></div></div>
+&lt;/build&gt;</pre></div>
+<p>Note: jcabi-maven-plugin has to have hibernate-validator dependency as in the example to avoid &quot;JSR-303 validator failed to initialize: Unable to instantiate Configuration&quot; warning during build.</p></div></div>
                         </article>
                     </div>
                 </main>
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2014
+                                                                            2012-2015
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
                     <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
