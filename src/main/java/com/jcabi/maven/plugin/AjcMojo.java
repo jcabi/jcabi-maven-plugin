@@ -184,7 +184,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         required = false,
         readonly = false,
         property = "log",
-        defaultValue = "${project.build.outputDirectory}/jcabi-ajc.log"
+        defaultValue = "${project.build.directory}/jcabi-ajc.log"
     )
     private transient String log;
 
