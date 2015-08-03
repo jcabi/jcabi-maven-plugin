@@ -44,9 +44,12 @@ import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
@@ -198,67 +201,87 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
     @Loggable(value = Loggable.DEBUG, limit = 1, unit = TimeUnit.MINUTES)
     public void execute() throws MojoFailureException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
+        final ArtifactHandler artifactHandler = this.project.getArtifact()
+                .getArtifactHandler();
+        if (!"java".equalsIgnoreCase(artifactHandler.getLanguage())) {
+            Logger.warn(
+                    this,
+                    // @checkstyle LineLength (1 line)
+                    "Not executing AJC as the project is not a Java classpath-capable package"
+            );
+            return;
+        }
         if (this.classesDirectory.mkdirs()) {
             Logger.info(this, "Created classes dir %s", this.classesDirectory);
         }
-        if (this.tempDirectory.mkdirs()) {
-            Logger.info(this, "Created temp dir %s", this.tempDirectory);
-        }
-        final Main main = new Main();
-        final IMessageHolder mholder = new AjcMojo.MsgHolder();
-        main.run(
-            new String[] {
-                "-Xset:avoidFinal=true",
-                "-Xlint:warning",
-                "-inpath",
-                this.classesDirectory.getAbsolutePath(),
-                "-sourceroots",
-                this.sourceroots(),
-                "-d",
-                this.tempDirectory.getAbsolutePath(),
-                "-classpath",
-                StringUtils.join(this.classpath(), AjcMojo.SEP),
-                "-aspectpath",
-                this.aspectpath(),
-                "-source",
-                this.source,
-                "-target",
-                this.target,
-                "-g:none",
-                "-encoding",
-                "UTF-8",
-                "-time",
-                "-log",
-                this.log,
-                "-showWeaveInfo",
-                "-warn:constructorName",
-                "-warn:packageDefaultMethod",
-                "-warn:deprecation",
-                "-warn:maskedCatchBlocks",
-                "-warn:unusedLocals",
-                "-warn:unusedArguments",
-                "-warn:unusedImports",
-                "-warn:syntheticAccess",
-                "-warn:assertIdentifier",
-            },
-            mholder
-        );
-        try {
-            FileUtils.copyDirectory(this.tempDirectory, this.classesDirectory);
-        } catch (final IOException ex) {
-            throw new MojoFailureException("failed to copy files back", ex);
-        }
-        Logger.info(
-            this,
-            // @checkstyle LineLength (1 line)
-            "ajc result: %d file(s) processed, %d pointcut(s) woven, %d error(s), %d warning(s)",
-            AjcMojo.files(this.tempDirectory).size(),
-            mholder.numMessages(IMessage.WEAVEINFO, false),
-            mholder.numMessages(IMessage.ERROR, true),
-            mholder.numMessages(IMessage.WARNING, false)
-        );
-        if (mholder.hasAnyMessage(IMessage.ERROR, true)) {
-            throw new MojoFailureException("AJC failed, see log above");
+        if (this.hasClasses() || this.hasSourceroots()) {
+            if (this.tempDirectory.mkdirs()) {
+                Logger.info(this, "Created temp dir %s", this.tempDirectory);
+            }
+            final Main main = new Main();
+            final IMessageHolder mholder = new AjcMojo.MsgHolder();
+            main.run(
+                new String[] {
+                    "-Xset:avoidFinal=true",
+                    "-Xlint:warning",
+                    "-inpath",
+                    this.classesDirectory.getAbsolutePath(),
+                    "-sourceroots",
+                    this.sourceroots(),
+                    "-d",
+                    this.tempDirectory.getAbsolutePath(),
+                    "-classpath",
+                    StringUtils.join(this.classpath(), AjcMojo.SEP),
+                    "-aspectpath",
+                    this.aspectpath(),
+                    "-source",
+                    this.source,
+                    "-target",
+                    this.target,
+                    "-g:none",
+                    "-encoding",
+                    "UTF-8",
+                    "-time",
+                    "-log",
+                    this.log,
+                    "-showWeaveInfo",
+                    "-warn:constructorName",
+                    "-warn:packageDefaultMethod",
+                    "-warn:deprecation",
+                    "-warn:maskedCatchBlocks",
+                    "-warn:unusedLocals",
+                    "-warn:unusedArguments",
+                    "-warn:unusedImports",
+                    "-warn:syntheticAccess",
+                    "-warn:assertIdentifier",
+                },
+                mholder
+            );
+            try {
+                FileUtils.copyDirectory(
+                        this.tempDirectory, this.classesDirectory
+                );
+            } catch (final IOException ex) {
+                throw new MojoFailureException("failed to copy files back", ex);
+            }
+            Logger.info(
+                this,
+                // @checkstyle LineLength (1 line)
+                "ajc result: %d file(s) processed, %d pointcut(s) woven, %d error(s), %d warning(s)",
+                AjcMojo.files(this.tempDirectory).size(),
+                mholder.numMessages(IMessage.WEAVEINFO, false),
+                mholder.numMessages(IMessage.ERROR, true),
+                mholder.numMessages(IMessage.WARNING, false)
+            );
+            if (mholder.hasAnyMessage(IMessage.ERROR, true)) {
+                throw new MojoFailureException("AJC failed, see log above");
+            }
+        } else {
+            Logger.warn(
+                    this,
+                    // @checkstyle LineLength (1 line)
+                    "Not executing AJC as there is no .class file or source roots file."
+            );
         }
     }
 
@@ -407,6 +430,32 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
             path = StringUtils.join(this.aspectDirectories, AjcMojo.SEP);
         }
         return path;
+    }
+
+    /**
+     * Check if the project contains .class files.
+     * @return True if .class files found
+     */
+    private boolean hasClasses() {
+        boolean hasClasses;
+        final IOFileFilter classesFilter = FileFilterUtils
+                .suffixFileFilter(".class");
+        hasClasses = FileUtils.listFiles(
+                this.classesDirectory, classesFilter, FileFilterUtils
+                        .directoryFileFilter()
+        ).size() > 0;
+        return hasClasses;
+    }
+
+    /**
+     * Check if the project contains source roots files.
+     * @return True if {@linkplain #aspectDirectories} contain files
+     */
+    private boolean hasSourceroots() {
+        boolean hasSourceroots;
+        hasSourceroots = this.aspectDirectories != null
+                && this.aspectDirectories.length > 0;
+        return hasSourceroots;
     }
 
     /**
