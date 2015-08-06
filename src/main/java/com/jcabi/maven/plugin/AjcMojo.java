@@ -437,14 +437,12 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * @return True if .class files found
      */
     private boolean hasClasses() {
-        boolean hasClasses;
         final IOFileFilter classesFilter = FileFilterUtils
                 .suffixFileFilter(".class");
-        hasClasses = FileUtils.listFiles(
+        return FileUtils.listFiles(
                 this.classesDirectory, classesFilter, FileFilterUtils
                         .directoryFileFilter()
         ).size() > 0;
-        return hasClasses;
     }
 
     /**
@@ -452,10 +450,8 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * @return True if {@linkplain #aspectDirectories} contain files
      */
     private boolean hasSourceroots() {
-        boolean hasSourceroots;
-        hasSourceroots = this.aspectDirectories != null
+        return this.aspectDirectories != null
                 && this.aspectDirectories.length > 0;
-        return hasSourceroots;
     }
 
     /**
