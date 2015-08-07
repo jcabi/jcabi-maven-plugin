@@ -202,12 +202,12 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
     public void execute() throws MojoFailureException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
         final ArtifactHandler artifactHandler = this.project.getArtifact()
-                .getArtifactHandler();
+            .getArtifactHandler();
         if (!"java".equalsIgnoreCase(artifactHandler.getLanguage())) {
             Logger.warn(
-                    this,
-                    // @checkstyle LineLength (1 line)
-                    "Not executing AJC as the project is not a Java classpath-capable package"
+                this,
+                // @checkstyle LineLength (1 line)
+                "Not executing AJC as the project is not a Java classpath-capable package"
             );
             return;
         }
@@ -218,9 +218,9 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
             this.executeAJC();
         } else {
             Logger.warn(
-                    this,
-                    // @checkstyle LineLength (1 line)
-                    "Not executing AJC as there is no .class file or source roots file."
+                this,
+                // @checkstyle LineLength (1 line)
+                "Not executing AJC as there is no .class file or source roots file."
             );
         }
     }
@@ -445,10 +445,10 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      */
     private boolean hasClasses() {
         final IOFileFilter classesFilter = FileFilterUtils
-                .suffixFileFilter(".class");
+            .suffixFileFilter(".class");
         return FileUtils.listFiles(
-                this.classesDirectory, classesFilter, FileFilterUtils
-                        .directoryFileFilter()
+            this.classesDirectory, classesFilter, FileFilterUtils
+                .directoryFileFilter()
         ).size() > 0;
     }
 
@@ -458,7 +458,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      */
     private boolean hasSourceroots() {
         return this.aspectDirectories != null
-                && this.aspectDirectories.length > 0;
+            && this.aspectDirectories.length > 0;
     }
 
     /**
