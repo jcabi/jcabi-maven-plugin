@@ -1,6 +1,6 @@
 ## Puzzles
 
-There are 0 active puzzles (3 total), updated on 2015-12-09T10:39:23Z:
+There are 0 active puzzles (3 total), updated on 2015-12-09T13:24:49Z:
 
 unknown ?
 &nbsp;[1](https://github.com/jcabi/jcabi-maven-plugin/issues/1) ?
