@@ -1,9 +1,8 @@
-<md xmlns="http://www.w3.org/1999/xhtml" etag="3-puzzles-xsd/init.xsl">## Puzzles
+## Puzzles
 
-There are 0 active puzzles (1 total), updated on 2015-12-09T08:11:28Z:
+There are 0 active puzzles (3 total), updated on 2015-12-09T10:39:23Z:
 
-<del>unknown</del> ?
-.[<del>1</del>](https://github.com/jcabi/jcabi-maven-plugin/issues/1) ?
-.<del>1-6356edfc</del> src/test/java/com/jcabi/maven/plugin/AjcMojoTest.java:72-73
+unknown ?
+&nbsp;[1](https://github.com/jcabi/jcabi-maven-plugin/issues/1) ?
+&nbsp;&nbsp;1-6356edfc src/test/java/com/jcabi/maven/plugin/AjcMojoTest.java:72-73
 
-</md>
