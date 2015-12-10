@@ -1,8 +1,8 @@
 ## Puzzles
 
-There are 0 active puzzles (3 total), updated on 2015-12-09T13:24:49Z:
+There are 0 active puzzles (3 total):
 
-unknown ?
-&nbsp;[1](https://github.com/jcabi/jcabi-maven-plugin/issues/1) ?
-&nbsp;&nbsp;1-6356edfc src/test/java/com/jcabi/maven/plugin/AjcMojoTest.java:72-73
 
+<del>unknown</del> [`?`](../master/?)<br/>
+&nbsp;&nbsp;&nbsp;[<del>1</del>](https://github.com/jcabi/jcabi-maven-plugin/issues/1) [`?`](../master/?)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<del>1-6356edfc</del> [`AjcMojoTest.java:72-73`](../master/src/test/java/com/jcabi/maven/plugin/AjcMojoTest.java#L72-L73)<br/>
