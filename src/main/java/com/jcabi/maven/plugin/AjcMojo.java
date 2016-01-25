@@ -250,7 +250,10 @@ public final class AjcMojo extends AbstractMojo {
             FileUtils.copyDirectory(this.tempDirectory, this.classesDirectory);
             FileUtils.cleanDirectory(this.tempDirectory);
         } catch (final IOException ex) {
-            throw new MojoFailureException("failed to copy files and clean temp", ex);
+            throw new MojoFailureException(
+                "failed to copy files and clean temp"
+                , ex
+            );
         }
         Logger.info(
             this,
