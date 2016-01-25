@@ -28,7 +28,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-def file = new File(targetdir, 'jcabi-ajc/com/jcabi/foo/Sample.class')
+def file = new File(basedir, '../../jcabi-ajc/com/jcabi/foo/Sample.class')
 assert file.exists()
 assert !new File(basedir, 'target/classes/jcabi-ajc.log').exists()
 assert new File(basedir, 'target/jcabi-ajc.log').exists()
