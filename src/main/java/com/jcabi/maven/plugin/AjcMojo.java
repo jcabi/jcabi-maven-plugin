@@ -248,14 +248,18 @@ public final class AjcMojo extends AbstractMojo {
         );
         try {
             FileUtils.copyDirectory(this.tempDirectory, this.classesDirectory);
+            FileUtils.cleanDirectory(this.tempDirectory);
         } catch (final IOException ex) {
-            throw new MojoFailureException("failed to copy files back", ex);
+            throw new MojoFailureException(
+                "failed to copy files and clean temp",
+                ex
+            );
         }
         Logger.info(
             this,
             // @checkstyle LineLength (1 line)
             "ajc result: %d file(s) processed, %d pointcut(s) woven, %d error(s), %d warning(s)",
-            AjcMojo.files(this.tempDirectory).size(),
+            AjcMojo.files(this.classesDirectory).size(),
             mholder.numMessages(IMessage.WEAVEINFO, false),
             mholder.numMessages(IMessage.ERROR, true),
             mholder.numMessages(IMessage.WARNING, false)
