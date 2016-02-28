@@ -94,6 +94,9 @@
                         <goals>
                             <goal>ajc</goal>
                         </goals>
+                        <configuration>
+                            <unwovenClassesDir>target/unwoven</unwovenClassesDir>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

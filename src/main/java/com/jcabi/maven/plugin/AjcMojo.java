@@ -106,6 +106,17 @@ public final class AjcMojo extends AbstractMojo {
     private transient File classesDirectory;
 
     /**
+     * Directory in which uwoven classes are copied.
+     * @checkstyle MemberNameCheck (10 lines)
+     */
+    @Parameter(
+        required = false,
+        readonly = false,
+        defaultValue = "${project.build.outputDirectory}"
+    )
+    private transient File unwovenClassesDir;
+
+    /**
      * Directories with aspects.
      * @checkstyle MemberNameCheck (10 lines)
      */
@@ -187,7 +198,35 @@ public final class AjcMojo extends AbstractMojo {
         if (this.classesDirectory.mkdirs()) {
             Logger.info(this, "Created classes dir %s", this.classesDirectory);
         }
-        if (this.hasClasses() || this.hasSourceroots()) {
+        final boolean projectHasClasses = this.hasClasses();
+        if (!this.unwovenClassesDir.equals(this.classesDirectory)) {
+            this.unwovenClassesDir.mkdirs();
+            Logger.info(
+                this,
+                "Unwoven classes will be copied to %s",
+                this.unwovenClassesDir
+            );
+            if (projectHasClasses) {
+                try {
+                    this.copyClasses(this.unwovenClassesDir);
+                } catch (final IOException ex) {
+                    final String message = String.format(
+                        "IOException when copying unwoven classes to %s: %s",
+                        this.unwovenClassesDir,
+                        ex.getMessage()
+                    );
+                    throw new MojoFailureException(message, ex);
+                }
+            } else {
+                Logger.warn(
+                    this,
+                    "No classes found at %s. Nothing will be copied to %s",
+                    this.classesDirectory,
+                    this.unwovenClassesDir
+                );
+            }
+        }
+        if (projectHasClasses || this.hasSourceroots()) {
             this.executeAJC();
         } else {
             Logger.warn(
@@ -324,14 +363,20 @@ public final class AjcMojo extends AbstractMojo {
      * @return True if .class files found
      */
     private boolean hasClasses() {
+        return this.listClasses().size() > 0;
+    }
+    /**
+     * List of all .class files from <b>classesDIrectory</b>.
+     * @return A Collection of .class files.
+     */
+    private Collection<File> listClasses() {
         final IOFileFilter classesFilter = FileFilterUtils
-            .suffixFileFilter(".class");
+                .suffixFileFilter(".class");
         return FileUtils.listFiles(
             this.classesDirectory, classesFilter, FileFilterUtils
                 .directoryFileFilter()
-        ).size() > 0;
+        );
     }
-
     /**
      * Check if the project contains source roots files.
      * @return True if {@linkplain #aspectDirectories} contain files
@@ -357,6 +402,19 @@ public final class AjcMojo extends AbstractMojo {
             }
         }
         return files;
+    }
+
+    /**
+     * Copies classes into a separate directory.
+     * @param dir The target directory.
+     * @throws IOException If something goes wrong while copying a file.
+     */
+    private void copyClasses(final File dir) throws IOException {
+        FileUtils.cleanDirectory(dir);
+        final Collection<File> classes = this.listClasses();
+        for (final File classFile : classes) {
+            FileUtils.copyFileToDirectory(classFile, dir);
+        }
     }
 
     /**
