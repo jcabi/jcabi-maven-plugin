@@ -98,7 +98,7 @@ public final class AjcMojo extends AbstractMojo {
 
     /**
      * Compiled directory.
-     * @checkstyle MemberNameCheck (10 lines)
+     * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
         required = false,
@@ -109,7 +109,7 @@ public final class AjcMojo extends AbstractMojo {
 
     /**
      * Directory in which uwoven classes are copied.
-     * @checkstyle MemberNameCheck (10 lines)
+     * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
         required = false,
@@ -120,7 +120,7 @@ public final class AjcMojo extends AbstractMojo {
 
     /**
      * Directories with aspects.
-     * @checkstyle MemberNameCheck (10 lines)
+     * @checkstyle MemberNameCheck (6 lines)
      */
     @Parameter(
         required = false,
@@ -130,7 +130,7 @@ public final class AjcMojo extends AbstractMojo {
 
     /**
      * Temporary directory.
-     * @checkstyle MemberNameCheck (10 lines)
+     * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
         defaultValue = "${project.build.directory}/jcabi-ajc",
@@ -163,7 +163,7 @@ public final class AjcMojo extends AbstractMojo {
 
     /**
      * Project classpath.
-     * @checkstyle MemberNameCheck (10 lines)
+     * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
             defaultValue = "${project.compileClasspathElements}",
