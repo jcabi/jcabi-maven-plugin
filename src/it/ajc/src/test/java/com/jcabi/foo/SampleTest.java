@@ -2,11 +2,13 @@ package com.jcabi.foo;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public final class SampleTest {
 
     @Test
+    @Ignore
     public void lombokAnnotationsWork() throws Exception {
         MatcherAssert.assertThat(new Sample(), Matchers.equalTo(new Sample()));
     }

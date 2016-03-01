@@ -68,6 +68,8 @@ import org.slf4j.impl.StaticLoggerBinder;
  * @version $Id$
  * @since 0.7.16
  * @link <a href="http://www.eclipse.org/aspectj/doc/next/devguide/ajc-ref.html">AJC compiler manual</a>
+ * @todo #45:30min The new mojo parameter, unwovenClassesDir, should be
+ *  documented and exemplified on the plugin's site plugin.jcabi.com.
  */
 @Mojo(
     name = "ajc",
@@ -202,20 +204,20 @@ public final class AjcMojo extends AbstractMojo {
         if (!this.unwovenClassesDir.equals(this.classesDirectory)) {
             this.unwovenClassesDir.mkdirs();
             Logger.info(
-                this,
-                "Unwoven classes will be copied to %s",
+                this, "Unwoven classes will be copied to %s",
                 this.unwovenClassesDir
             );
             if (projectHasClasses) {
                 try {
                     this.copyClasses(this.unwovenClassesDir);
                 } catch (final IOException ex) {
-                    final String message = String.format(
-                        "IOException when copying unwoven classes to %s: %s",
-                        this.unwovenClassesDir,
-                        ex.getMessage()
+                    throw new MojoFailureException(
+                        String.format(
+                            "Exception when copying unwoven classes to %s: %s",
+                            this.unwovenClassesDir, ex.getMessage()
+                        ),
+                        ex
                     );
-                    throw new MojoFailureException(message, ex);
                 }
             } else {
                 Logger.warn(
@@ -366,12 +368,12 @@ public final class AjcMojo extends AbstractMojo {
         return this.listClasses().size() > 0;
     }
     /**
-     * List of all .class files from <b>classesDIrectory</b>.
-     * @return A Collection of .class files.
+     * List of all .class files from <b>classesDirectory</b>.
+     * @return A Collection of .class files
      */
     private Collection<File> listClasses() {
         final IOFileFilter classesFilter = FileFilterUtils
-                .suffixFileFilter(".class");
+            .suffixFileFilter(".class");
         return FileUtils.listFiles(
             this.classesDirectory, classesFilter, FileFilterUtils
                 .directoryFileFilter()
@@ -406,14 +408,14 @@ public final class AjcMojo extends AbstractMojo {
 
     /**
      * Copies classes into a separate directory.
-     * @param dir The target directory.
-     * @throws IOException If something goes wrong while copying a file.
+     * @param dir The target directory
+     * @throws IOException If something goes wrong while copying a file
      */
     private void copyClasses(final File dir) throws IOException {
         FileUtils.cleanDirectory(dir);
         final Collection<File> classes = this.listClasses();
-        for (final File classFile : classes) {
-            FileUtils.copyFileToDirectory(classFile, dir);
+        for (final File file : classes) {
+            FileUtils.copyFileToDirectory(file, dir);
         }
     }
 

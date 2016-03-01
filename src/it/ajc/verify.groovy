@@ -30,4 +30,5 @@
 
 assert !new File(basedir, 'target/classes/jcabi-ajc.log').exists()
 assert new File(basedir, 'target/jcabi-ajc.log').exists()
+assert new File(basedir, 'target/classes/com/jcabi/foo/Sample.class').exists()
 assert new File(basedir, 'target/unwoven/Sample.class').exists()
