@@ -38,20 +38,6 @@
     <properties>
         <jcabi.version>0.7.16</jcabi.version>
     </properties>
-    <dependencies>
-        <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-aspects</artifactId>
-            <version>${jcabi.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.7.2</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
     <build>
         <plugins>
             <plugin>
