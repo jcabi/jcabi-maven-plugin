@@ -202,31 +202,7 @@ public final class AjcMojo extends AbstractMojo {
         }
         final boolean projectHasClasses = this.hasClasses();
         if (!this.unwovenClassesDir.equals(this.classesDirectory)) {
-            this.unwovenClassesDir.mkdirs();
-            Logger.info(
-                this, "Unwoven classes will be copied to %s",
-                this.unwovenClassesDir
-            );
-            if (projectHasClasses) {
-                try {
-                    this.copyClasses(this.unwovenClassesDir);
-                } catch (final IOException ex) {
-                    throw new MojoFailureException(
-                        String.format(
-                            "Exception when copying unwoven classes to %s: %s",
-                            this.unwovenClassesDir, ex.getMessage()
-                        ),
-                        ex
-                    );
-                }
-            } else {
-                Logger.warn(
-                    this,
-                    "No classes found at %s. Nothing will be copied to %s",
-                    this.classesDirectory,
-                    this.unwovenClassesDir
-                );
-            }
+            this.copyUnwovenClassesSepparately(projectHasClasses);
         }
         if (projectHasClasses || this.hasSourceroots()) {
             this.executeAJC();
@@ -405,7 +381,41 @@ public final class AjcMojo extends AbstractMojo {
         }
         return files;
     }
-
+    /**
+     * Copy the unwoven classes from <b>classesDirectory</b> to
+     * <b>unwovenClassesDir</b>.
+     * @param classes Is true if any classes were found in classesDirectory
+     *  or false otherwise.
+     * @throws MojoFailureException If something goes wrong
+     */
+    private void copyUnwovenClassesSepparately(final boolean classes)
+        throws MojoFailureException {
+        this.unwovenClassesDir.mkdirs();
+        Logger.info(
+            this, "Unwoven classes will be copied to %s",
+            this.unwovenClassesDir
+        );
+        if (classes) {
+            try {
+                this.copyClasses(this.unwovenClassesDir);
+            } catch (final IOException ex) {
+                throw new MojoFailureException(
+                    String.format(
+                        "Exception when copying unwoven classes to %s: %s",
+                        this.unwovenClassesDir, ex.getMessage()
+                    ),
+                    ex
+                );
+            }
+        } else {
+            Logger.warn(
+                this,
+                "No classes found at %s. Nothing will be copied to %s",
+                this.classesDirectory,
+                this.unwovenClassesDir
+            );
+        }
+    }
     /**
      * Copies classes into a separate directory.
      * @param dir The target directory
@@ -413,10 +423,7 @@ public final class AjcMojo extends AbstractMojo {
      */
     private void copyClasses(final File dir) throws IOException {
         FileUtils.cleanDirectory(dir);
-        final Collection<File> classes = this.listClasses();
-        for (final File file : classes) {
-            FileUtils.copyFileToDirectory(file, dir);
-        }
+        FileUtils.copyDirectory(this.classesDirectory, dir, false);
     }
 
     /**

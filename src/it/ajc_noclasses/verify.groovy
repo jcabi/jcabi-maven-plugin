@@ -28,7 +28,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-assert !new File(basedir, 'target/classes/jcabi-ajc.log').exists()
-assert new File(basedir, 'target/jcabi-ajc.log').exists()
-assert new File(basedir, 'target/classes/com/jcabi/foo/Sample.class').exists()
-assert new File(basedir, 'target/unwoven/com/jcabi/foo/Sample.class').exists()
+/*
+ No classes were found in classesDirectory, so no unwoven classes to copy in 
+ unwivenClassesDir.
+*/
+
+assert new File(basedir, 'target/classes').list().length == 0
+assert new File(basedir, 'target/unwoven').list().length == 0
