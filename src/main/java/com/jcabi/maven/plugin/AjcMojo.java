@@ -212,7 +212,8 @@ public final class AjcMojo extends AbstractMojo {
             Logger.info(this, "Created classes dir %s", this.classesDirectory);
         }
         final boolean projectHasClasses = this.hasClasses();
-        if (!this.unwovenClassesDir.equals(this.outputDirectory)) {
+        if (!this.unwovenClassesDir.equals(this.outputDirectory)
+            && !this.unwovenClassesDir.equals(this.classesDirectory)) {
             this.copyUnwovenClassesSepparately(projectHasClasses);
         }
         if (projectHasClasses || this.hasSourceroots()) {
