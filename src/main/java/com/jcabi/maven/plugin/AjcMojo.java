@@ -119,6 +119,17 @@ public final class AjcMojo extends AbstractMojo {
     private transient File unwovenClassesDir;
 
     /**
+     * Project's classes output directory.
+     * @checkstyle MemberNameCheck (7 lines)
+     */
+    @Parameter(
+        defaultValue = "${project.build.outputDirectory}",
+        required = true,
+        readonly = true
+    )
+    private transient File outputDirectory;
+
+    /**
      * Directories with aspects.
      * @checkstyle MemberNameCheck (6 lines)
      */
@@ -201,7 +212,7 @@ public final class AjcMojo extends AbstractMojo {
             Logger.info(this, "Created classes dir %s", this.classesDirectory);
         }
         final boolean projectHasClasses = this.hasClasses();
-        if (!this.unwovenClassesDir.equals(this.classesDirectory)) {
+        if (!this.unwovenClassesDir.equals(this.outputDirectory)) {
             this.copyUnwovenClassesSepparately(projectHasClasses);
         }
         if (projectHasClasses || this.hasSourceroots()) {

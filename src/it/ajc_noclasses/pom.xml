@@ -35,9 +35,6 @@
     <name>test</name>
     <version>1.0</version>
     <packaging>jar</packaging>
-    <properties>
-        <jcabi.version>0.7.16</jcabi.version>
-    </properties>
     <build>
         <plugins>
             <plugin>

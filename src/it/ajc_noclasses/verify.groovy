@@ -30,7 +30,7 @@
 
 /*
  No classes were found in classesDirectory, so no unwoven classes to copy in 
- unwivenClassesDir.
+ unwovenClassesDir.
 */
 
 assert new File(basedir, 'target/classes').list().length == 0
