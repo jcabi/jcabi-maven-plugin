@@ -122,13 +122,13 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">0.13.2</strong>
+                                    <strong itemprop="version">0.14</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2015-08-28T11:56:25Z">
+                                    <time itemprop="datePublished" datetime="2016-03-05T11:30:13Z">
                                         
-                                        28-Aug-2015
+                                        05-Mar-2016
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -180,7 +180,7 @@
       
 <p><b>Full name</b>:</p>
       
-<p>com.jcabi:jcabi-maven-plugin:0.13.2:ajc</p>
+<p>com.jcabi:jcabi-maven-plugin:0.14:ajc</p>
       
 <p><b>Description</b>:</p>
       
@@ -191,6 +191,8 @@
 <ul>
         
 <li>Requires a Maven project to be executed.</li>
+        
+<li>Requires dependency resolution of artifacts in scope: <tt>compile</tt>.</li>
         
 <li>The goal is thread-safe and supports parallel builds.</li>
         
@@ -250,17 +252,6 @@
           
 <tr class="a">
             
-<td><b><a href="#scopes">scopes</a></b></td>
-            
-<td><tt>String[]</tt></td>
-            
-<td><tt>0.7.16</tt></td>
-            
-<td>Scopes to take into account.<br /></td>
-          </tr>
-          
-<tr class="b">
-            
 <td><b><a href="#source">source</a></b></td>
             
 <td><tt>String</tt></td>
@@ -270,7 +261,7 @@
 <td>Java source version.<br /><b>Default value is</b>: <tt>1.6</tt>.<br /><b>User property is</b>: <tt>source</tt>.</td>
           </tr>
           
-<tr class="a">
+<tr class="b">
             
 <td><b><a href="#target">target</a></b></td>
             
@@ -281,7 +272,7 @@
 <td>Java target version.<br /><b>Default value is</b>: <tt>1.6</tt>.<br /><b>User property is</b>: <tt>target</tt>.</td>
           </tr>
           
-<tr class="b">
+<tr class="a">
             
 <td><b><a href="#tempDirectory">tempDirectory</a></b></td>
             
@@ -290,6 +281,17 @@
 <td><tt>0.7.16</tt></td>
             
 <td>Temporary directory.<br /><b>Default value is</b>: <tt>${project.build.directory}/jcabi-ajc</tt>.<br /></td>
+          </tr>
+          
+<tr class="b">
+            
+<td><b><a href="#unwovenClassesDir">unwovenClassesDir</a></b></td>
+            
+<td><tt>File</tt></td>
+            
+<td><tt>0.7.16</tt></td>
+            
+<td>Directory in which uwoven classes are copied.<br /><b>Default value is</b>: <tt>${project.build.outputDirectory}</tt>.<br /></td>
           </tr>
         </table>
       </div>
@@ -339,18 +341,6 @@
           
 <li><b>Default</b>: <tt>${project.build.directory}/jcabi-ajc.log</tt></li>
         </ul><hr />
-<p><b><a name="scopes">scopes</a>:</b></p>
-        
-<div>Scopes to take into account.</div>
-        
-<ul>
-          
-<li><b>Type</b>: <tt>java.lang.String[]</tt></li>
-          
-<li><b>Since</b>: <tt>0.7.16</tt></li>
-          
-<li><b>Required</b>: <tt>No</tt></li>
-        </ul><hr />
 <p><b><a name="source">source</a>:</b></p>
         
 <div>Java source version.</div>
@@ -396,6 +386,20 @@
 <li><b>Required</b>: <tt>No</tt></li>
           
 <li><b>Default</b>: <tt>${project.build.directory}/jcabi-ajc</tt></li>
+        </ul><hr />
+<p><b><a name="unwovenClassesDir">unwovenClassesDir</a>:</b></p>
+        
+<div>Directory in which uwoven classes are copied.</div>
+        
+<ul>
+          
+<li><b>Type</b>: <tt>java.io.File</tt></li>
+          
+<li><b>Since</b>: <tt>0.7.16</tt></li>
+          
+<li><b>Required</b>: <tt>No</tt></li>
+          
+<li><b>Default</b>: <tt>${project.build.outputDirectory}</tt></li>
         </ul>
       </div>
     </div>
@@ -407,7 +411,7 @@
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2015
+                                                                            2012-2016
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
                     <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
