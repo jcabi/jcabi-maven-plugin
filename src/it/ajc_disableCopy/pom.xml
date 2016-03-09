@@ -94,6 +94,9 @@
                         <goals>
                             <goal>ajc</goal>
                         </goals>
+                        <configuration>
+                            <disableCopy>true</disableCopy>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+/**
  * Copyright (c) 2012-2015, jcabi.com
  * All rights reserved.
  *
@@ -27,29 +26,11 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
- -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.jcabi</groupId>
-    <artifactId>jcabi-test</artifactId>
-    <name>test</name>
-    <version>1.0</version>
-    <packaging>jar</packaging>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.jcabi</groupId>
-                <artifactId>jcabi-maven-plugin</artifactId>
-                <version>@project.version@</version>
-                <executions>
-                    <execution>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>ajc</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-</project>
+ */
+
+assert !new File(basedir, 'target/classes/jcabi-ajc.log').exists()
+assert new File(basedir, 'target/jcabi-ajc.log').exists()
+File wovenClasses = new File(basedir, 'target/classes/com/jcabi/foo/Sample.class')
+File unwovenClasses = new File(basedir, 'target/unwoven')
+assert wovenClasses.exists()
+assert !unwovenClasses.exists()
