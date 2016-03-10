@@ -112,8 +112,8 @@ public final class AjcMojo extends AbstractMojo {
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(
-        required = true,
-        readonly = true,
+        required = false,
+        readonly = false,
         defaultValue = "${project.build.directory}/unwoven"
     )
     private transient File unwovenClassesDir;
@@ -211,7 +211,8 @@ public final class AjcMojo extends AbstractMojo {
         if (this.classesDirectory.mkdirs()) {
             Logger.info(this, "Created classes dir %s", this.classesDirectory);
         }
-        if (!this.disableCopy) {
+        if (!this.disableCopy
+            && !this.unwovenClassesDir.equals(this.classesDirectory)) {
             this.copyUnwovenClasses();
         }
         if (this.hasClasses() || this.hasSourceroots()) {
