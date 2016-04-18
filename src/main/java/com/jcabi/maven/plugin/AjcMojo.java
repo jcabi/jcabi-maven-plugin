@@ -68,8 +68,6 @@ import org.slf4j.impl.StaticLoggerBinder;
  * @version $Id$
  * @since 0.7.16
  * @link <a href="http://www.eclipse.org/aspectj/doc/next/devguide/ajc-ref.html">AJC compiler manual</a>
- * @todo #45:30min The new mojo parameter, unwovenClassesDir, should be
- *  documented and exemplified on the plugin's site plugin.jcabi.com.
  */
 @Mojo(
     name = "ajc",

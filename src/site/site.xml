@@ -62,6 +62,7 @@
             <item name="Versionalize JARs" href="example-versionalize.html"/>
             <item name="Weave binaries with AspectJ" href="example-ajc.html"/>
             <item name="Weave your Java 8 classes" href="example-java8.html"/>
+            <item name="Copy unwoven classes" href="example-unwoven.html"/>
         </menu>
         <menu ref="reports"/>
     </body>
