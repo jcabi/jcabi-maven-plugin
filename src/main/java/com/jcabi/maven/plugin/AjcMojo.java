@@ -53,6 +53,7 @@ import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -107,6 +108,12 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      */
     @Component
     private transient MavenProject project;
+
+    /**
+     * Maven execution.
+     */
+    @Component
+    private transient MojoExecution execution;
 
     /**
      * Maven session.
@@ -536,12 +543,27 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      */
     private void copyUnwovenClasses()
         throws MojoFailureException {
-        this.unwovenClassesDir.mkdirs();
-        Logger.info(
-            this, "Unwoven classes will be copied to %s",
-            this.unwovenClassesDir
-        );
         if (this.hasClasses()) {
+            final String phase = this.execution.getLifecyclePhase();
+            if ("process-classes".equals(phase)) {
+                this.unwovenClassesDir.mkdirs();
+                Logger.info(
+                    this, "Unwoven classes will be copied to %s",
+                    this.unwovenClassesDir
+                );
+            } else if ("process-test-classes".equals(phase)) {
+                final String testsuf = "-test";
+                final StringBuilder fpb = new StringBuilder();
+                fpb.append(this.unwovenClassesDir.getPath()).append(testsuf);
+                this.unwovenClassesDir = new File(fpb.toString());
+                this.unwovenClassesDir.mkdirs();
+                Logger.info(
+                    this, "Unwoven test classes will be copied to %s",
+                    this.unwovenClassesDir
+                );
+            } else {
+                return;
+            }
             try {
                 this.copyClasses(this.unwovenClassesDir);
             } catch (final IOException ex) {
