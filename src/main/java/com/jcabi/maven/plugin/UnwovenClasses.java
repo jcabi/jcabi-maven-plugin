@@ -35,7 +35,6 @@ import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
 
 /**
  * Operations on the unwoven classes.
@@ -78,16 +77,14 @@ public final class UnwovenClasses {
      *  copying the files
      */
     public void copy() throws MojoFailureException {
-        if (LifecyclePhase.PROCESS_CLASSES.id().equals(this.phase)) {
+        if ("process-classes".equals(this.phase)) {
             this.unwoven.mkdirs();
             Logger.info(
                 this, "Unwoven classes will be copied to %s",
                 this.unwoven
             );
             this.copyContents(this.classes, this.unwoven);
-        } else if (
-            LifecyclePhase.PROCESS_TEST_CLASSES.id().equals(this.phase)
-        ) {
+        } else if ("process-test-classes".equals(this.phase)) {
             final String suffix = "-test";
             final File unwovenTests = new File(
                 this.unwoven.getPath().concat(suffix)

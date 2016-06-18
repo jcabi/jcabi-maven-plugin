@@ -31,7 +31,6 @@ package com.jcabi.maven.plugin;
 
 import java.io.File;
 import org.apache.commons.io.FileUtils;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -67,7 +66,7 @@ public final class UnwovenClassesTest {
         new UnwovenClasses(
             unwoven,
             classes,
-            LifecyclePhase.PROCESS_CLASSES.id()
+            "process-classes"
         ).copy();
         MatcherAssert.assertThat(
             new File("src/test/resources/unwoven/MyPojo.txt").exists(),
@@ -90,7 +89,7 @@ public final class UnwovenClassesTest {
         new UnwovenClasses(
             unwoven,
             classes,
-            LifecyclePhase.PROCESS_TEST_CLASSES.id()
+            "process-test-classes"
         ).copy();
         MatcherAssert.assertThat(
             new File("src/test/resources/unwoven-test/MyPojo.txt").exists(),
