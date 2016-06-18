@@ -42,7 +42,6 @@ import org.junit.Test;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 0.15
- * @checkstyle MultipleStringLiteralsCheck (150 lines)
  */
 public final class UnwovenClassesTest {
 
@@ -58,11 +57,11 @@ public final class UnwovenClassesTest {
 
     /**
      * Clean also before just in case <b>AfterClass</b> fails.
+     * @throws Exception If something goes wrong
      */
     @BeforeClass
-    public static void cleanBefore() {
-        FileUtils.deleteQuietly(new File("src/test/resources/unwoven-test"));
-        FileUtils.deleteQuietly(new File(UNWOVEN));
+    public static void cleanBefore() throws Exception {
+        deleteResourceDirs();
     }
 
     /**
@@ -72,9 +71,7 @@ public final class UnwovenClassesTest {
     @Test
     public void copiesUnwovenClasses() throws Exception {
         new UnwovenClasses(
-            new File(UNWOVEN),
-            new File(CLASSES),
-            "process-classes"
+            new File(UNWOVEN), new File(CLASSES), "process-classes"
         ).copy();
         MatcherAssert.assertThat(
             new File("src/test/resources/unwoven/MyPojo.txt").exists(),
@@ -87,15 +84,13 @@ public final class UnwovenClassesTest {
     }
 
     /**
-     * UnwoveClasses can copy test classes to a destination directory.
+     * UnwovenClasses can copy test classes to a destination directory.
      * @throws Exception If something goes wrong
      */
     @Test
     public void copiesUnwovenTestClasses() throws Exception {
         new UnwovenClasses(
-            new File(UNWOVEN),
-            new File(CLASSES),
-            "process-test-classes"
+            new File(UNWOVEN), new File(CLASSES), "process-test-classes"
         ).copy();
         MatcherAssert.assertThat(
             new File("src/test/resources/unwoven-test/MyPojo.txt").exists(),
@@ -108,6 +103,10 @@ public final class UnwovenClassesTest {
             Matchers.is(true)
         );
     }
+    @Test
+    public void test() throws Exception {
+    	FileUtils.deleteDirectory(new File("src/test/resources/test"));
+    }
 
     /**
      * Clean resources after tests run.
@@ -115,8 +114,15 @@ public final class UnwovenClassesTest {
      */
     @AfterClass
     public static void cleanAfter() throws Exception {
-        FileUtils.deleteDirectory(new File("src/test/resources/unwoven-test"));
-        FileUtils.deleteDirectory(new File(UNWOVEN));
+        deleteResourceDirs();
     }
 
+    /**
+     * Delete test resource directories (for cleanup).
+     * @throws Exception If something goes wrong
+     */
+    public static void deleteResourceDirs() throws Exception {
+        FileUtils.deleteDirectory(new File("src/test/resources/unwoven-test"));
+        FileUtils.deleteDirectory(new File(UNWOVEN));    
+    }
 }
