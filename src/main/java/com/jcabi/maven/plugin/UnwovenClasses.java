@@ -37,10 +37,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
- * Operations on the unwoven classes.
+ * Operations on the unwoven classes, like storing them in a separate
+ * location from the woven ones. Unwoven classes are classes which weren't
+ * yet weaved by the aspect weaver.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- *
+ * @since 0.15
  */
 public final class UnwovenClasses {
     /**
@@ -60,19 +62,20 @@ public final class UnwovenClasses {
 
     /**
      * Constructor.
-     * @param uvn Dir where unwoven classes go
+     * @param uwvn Dir where unwoven classes go
      * @param cls Directory where the classes are found
-     * @param mph Maven execution phase
+     * @param phs Maven execution phase
      */
-    public UnwovenClasses(final File uvn, final File cls,
-        final String mph) {
-        this.unwoven = uvn;
+    public UnwovenClasses(final File uwvn, final File cls,
+        final String phs) {
+        this.unwoven = uwvn;
         this.classes = cls;
-        this.phase = mph;
+        this.phase = phs;
     }
 
     /**
-     * Perform the copy.
+     * Perform the copy. Unwoven classes go in <b>unwoven</b> directory, while
+     * unwoven test classes go in <b>unwoven</b> + -test directory.
      * @throws MojoFailureException If there is an IOException when
      *  copying the files
      */
@@ -105,19 +108,12 @@ public final class UnwovenClasses {
      * @throws MojoFailureException If something goes wrong while copying files
      */
     private void copyContents(
-        final File from,
-        final File dest) throws MojoFailureException {
+        final File from, final File dest) throws MojoFailureException {
         try {
             FileUtils.cleanDirectory(dest);
             FileUtils.copyDirectory(from, dest, false);
         } catch (final IOException ex) {
-            throw new MojoFailureException(
-                String.format(
-                    "Exception when copying unwoven classes to %s: %s",
-                    this.unwoven, ex.getMessage()
-                ),
-                ex
-            );
+            throw new MojoFailureException(ex.getMessage(), ex);
         }
     }
 

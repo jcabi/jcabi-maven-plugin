@@ -33,27 +33,16 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.After;
 import org.junit.Test;
 
 /**
- * Unit tests for {@UnwovenClasses).
+ * Unit tests for {@link UnwovenClasses).
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
+ * @since 0.15
  * @checkstyle MultipleStringLiteralsCheck (150 lines)
- *
  */
 public final class UnwovenClassesTest {
-
-    /**
-     * Delete the created directories after each test.
-     * @throws Exception If something goes wrong.
-     */
-    @After
-    public void clean() throws Exception {
-        FileUtils.deleteDirectory(new File("src/test/resources/unwoven"));
-        FileUtils.deleteDirectory(new File("src/test/resources/unwoven-test"));
-    }
 
     /**
      * UnwovenClasses can copy compiled classes to a destination directory.
@@ -61,34 +50,32 @@ public final class UnwovenClassesTest {
      */
     @Test
     public void copiesUnwovenClasses() throws Exception {
-        final File classes = new File("src/test/resources/classes");
-        final File unwoven = new File("src/test/resources/unwoven");
-        new UnwovenClasses(
+        final File unwoven = new File("src/test/resources/unwovendir");
+    	new UnwovenClasses(
             unwoven,
-            classes,
+            new File("src/test/resources/classes"),
             "process-classes"
         ).copy();
         MatcherAssert.assertThat(
-            new File("src/test/resources/unwoven/MyPojo.txt").exists(),
+            new File("src/test/resources/unwovendir/MyPojo.txt").exists(),
             Matchers.is(true)
         );
         MatcherAssert.assertThat(
-            new File("src/test/resources/unwoven/MySecondPojo.txt").exists(),
+            new File("src/test/resources/unwovendir/MySecondPojo.txt").exists(),
             Matchers.is(true)
         );
+        FileUtils.deleteDirectory(unwoven);
     }
 
     /**
      * UnwoveClasses can copy test classes to a destination directory.
-     * @throws Exception If something goes wrong.
+     * @throws Exception If something goes wrong
      */
     @Test
     public void copiesUnwovenTestClasses() throws Exception {
-        final File classes = new File("src/test/resources/classes");
-        final File unwoven = new File("src/test/resources/unwoven");
         new UnwovenClasses(
-            unwoven,
-            classes,
+            new File("src/test/resources/unwoven"),
+            new File("src/test/resources/classes"),
             "process-test-classes"
         ).copy();
         MatcherAssert.assertThat(
@@ -101,5 +88,6 @@ public final class UnwovenClassesTest {
             ).exists(),
             Matchers.is(true)
         );
+        FileUtils.deleteDirectory(new File("src/test/resources/unwoven-test"));
     }
 }
