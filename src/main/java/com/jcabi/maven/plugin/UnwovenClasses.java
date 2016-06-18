@@ -115,11 +115,11 @@ public final class UnwovenClasses {
             FileUtils.cleanDirectory(dest);
             FileUtils.copyDirectory(from, dest, false);
         } catch (final IOException ex) {
-            final StringBuilder msg = new StringBuilder();
-            msg.append("Exception when cleaning destination directory ");
-            msg.append(" or when copying files to it: %s");
             throw new MojoFailureException(
-                String.format(msg.toString(), ex.getMessage()),
+                String.format(
+                    "Error when cleaning dest dir or when copying files: %s",
+                    ex.getMessage()
+                ),
                 ex
             );
         }
