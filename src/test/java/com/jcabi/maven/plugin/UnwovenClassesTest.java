@@ -119,6 +119,6 @@ public final class UnwovenClassesTest {
      */
     public static void deleteResourceDirs() throws Exception {
         FileUtils.deleteDirectory(new File("src/test/resources/unwoven-test"));
-        FileUtils.deleteDirectory(new File(UNWOVEN));    
+        FileUtils.deleteDirectory(new File(UNWOVEN));
     }
 }
