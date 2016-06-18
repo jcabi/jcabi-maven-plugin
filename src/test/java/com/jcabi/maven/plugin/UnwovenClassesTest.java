@@ -103,10 +103,6 @@ public final class UnwovenClassesTest {
             Matchers.is(true)
         );
     }
-    @Test
-    public void test() throws Exception {
-    	FileUtils.deleteDirectory(new File("src/test/resources/test"));
-    }
 
     /**
      * Clean resources after tests run.
