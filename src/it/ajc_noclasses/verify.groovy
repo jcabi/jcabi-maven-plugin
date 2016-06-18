@@ -34,4 +34,4 @@
 */
 
 assert new File(basedir, 'target/classes').list().length == 0
-assert !new File(basedir, 'target/unwoven').list().exists()
+assert !new File(basedir, 'target/unwoven').exists()

@@ -45,6 +45,11 @@ import org.junit.Test;
 public final class UnwovenClassesTest {
 
     /**
+     * Classes directory.
+     */
+    private static final String CLASSES = "src/test/resources/classes";
+
+    /**
      * UnwovenClasses can copy compiled classes to a destination directory.
      * @throws Exception If something goes wrong
      */
@@ -53,7 +58,7 @@ public final class UnwovenClassesTest {
         final File unwoven = new File("src/test/resources/unwovendir");
     	new UnwovenClasses(
             unwoven,
-            new File("src/test/resources/classes"),
+            new File(CLASSES),
             "process-classes"
         ).copy();
         MatcherAssert.assertThat(
@@ -75,7 +80,7 @@ public final class UnwovenClassesTest {
     public void copiesUnwovenTestClasses() throws Exception {
         new UnwovenClasses(
             new File("src/test/resources/unwoven"),
-            new File("src/test/resources/classes"),
+            new File(CLASSES),
             "process-test-classes"
         ).copy();
         MatcherAssert.assertThat(
