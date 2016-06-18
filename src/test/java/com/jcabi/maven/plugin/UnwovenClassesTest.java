@@ -70,11 +70,11 @@ public final class UnwovenClassesTest {
             LifecyclePhase.PROCESS_CLASSES.id()
         ).copy();
         MatcherAssert.assertThat(
-            new File("src/test/resources/unwoven/MyPojo.class").exists(),
+            new File("src/test/resources/unwoven/MyPojo.txt").exists(),
             Matchers.is(true)
         );
         MatcherAssert.assertThat(
-            new File("src/test/resources/unwoven/MySecondPojo.class").exists(),
+            new File("src/test/resources/unwoven/MySecondPojo.txt").exists(),
             Matchers.is(true)
         );
     }
@@ -93,12 +93,12 @@ public final class UnwovenClassesTest {
             LifecyclePhase.PROCESS_TEST_CLASSES.id()
         ).copy();
         MatcherAssert.assertThat(
-            new File("src/test/resources/unwoven-test/MyPojo.class").exists(),
+            new File("src/test/resources/unwoven-test/MyPojo.txt").exists(),
             Matchers.is(true)
         );
         MatcherAssert.assertThat(
             new File(
-                "src/test/resources/unwoven-test/MySecondPojo.class"
+                "src/test/resources/unwoven-test/MySecondPojo.txt"
             ).exists(),
             Matchers.is(true)
         );

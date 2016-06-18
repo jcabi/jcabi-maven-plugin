@@ -1,0 +1,1 @@
+txt file instead of .class because git ignores .class files (shouldn't matter for the test, anyway)
