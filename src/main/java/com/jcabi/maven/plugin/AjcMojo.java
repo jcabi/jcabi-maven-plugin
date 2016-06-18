@@ -544,7 +544,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
     private void copyUnwovenClasses()
         throws MojoFailureException {
         if (this.hasClasses()) {
-            new CopyUnwovenClasses(
+            new UnwovenClasses(
                 this.unwovenClassesDir,
                 this.classesDirectory,
                 this.execution.getLifecyclePhase()

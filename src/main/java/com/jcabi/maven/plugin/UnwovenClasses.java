@@ -35,43 +35,41 @@ import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 
 /**
- * Unwoven classes should be copied to a specified directory.
+ * Operations on the unwoven classes.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @todo #48:30min This class extracts the copying of unwoven classes
- *  from AjcMojo. Unit tests should be written for it.
+ *
  */
-public final class CopyUnwovenClasses {
+public final class UnwovenClasses {
     /**
      * Directory where unwoven classes are saved.
      */
-    private final transient File unwovenclassesdir;
+    private final transient File unwoven;
 
     /**
      * Output directory from where the classes are taken.
      */
-    private final transient File classesdir;
+    private final transient File classes;
 
     /**
      * Maven execution phase.
      */
     private final transient String phase;
+
     /**
      * Constructor.
-     * @param unwoven Dir where unwoven classes go
-     * @param classes Directory where the classes are found
-     * @param execphase Maven execution phase
+     * @param uvn Dir where unwoven classes go
+     * @param cls Directory where the classes are found
+     * @param mph Maven execution phase
      */
-    public CopyUnwovenClasses(
-        final File unwoven,
-        final File classes,
-        final String execphase
-    ) {
-        this.unwovenclassesdir = unwoven;
-        this.classesdir = classes;
-        this.phase = execphase;
+    public UnwovenClasses(final File uvn, final File cls,
+        final String mph) {
+        this.unwoven = uvn;
+        this.classes = cls;
+        this.phase = mph;
     }
 
     /**
@@ -80,45 +78,46 @@ public final class CopyUnwovenClasses {
      *  copying the files
      */
     public void copy() throws MojoFailureException {
-        if ("process-classes".equals(this.phase)) {
-            this.unwovenclassesdir.mkdirs();
+        if (LifecyclePhase.PROCESS_CLASSES.id().equals(this.phase)) {
+            this.unwoven.mkdirs();
             Logger.info(
                 this, "Unwoven classes will be copied to %s",
-                this.unwovenclassesdir
+                this.unwoven
             );
-            this.copyContents(this.classesdir, this.unwovenclassesdir);
-        } else if ("process-test-classes".equals(this.phase)) {
+            this.copyContents(this.classes, this.unwoven);
+        } else if (
+            LifecyclePhase.PROCESS_TEST_CLASSES.id().equals(this.phase)
+        ) {
             final String suffix = "-test";
             final File unwovenTests = new File(
-                this.unwovenclassesdir.getPath().concat(suffix)
+                this.unwoven.getPath().concat(suffix)
             );
             unwovenTests.mkdirs();
             Logger.info(
                 this, "Unwoven test classes will be copied to %s",
                 unwovenTests
             );
-            this.copyContents(this.classesdir, unwovenTests);
+            this.copyContents(this.classes, unwovenTests);
         }
     }
 
     /**
      * Copies contents from one dir to another.
-     * @param fromdir From directory
-     * @param todir To directory
+     * @param from From directory
+     * @param dest Destination directory
      * @throws MojoFailureException If something goes wrong while copying files
      */
     private void copyContents(
-        final File fromdir,
-        final File todir
-    ) throws MojoFailureException {
+        final File from,
+        final File dest) throws MojoFailureException {
         try {
-            FileUtils.cleanDirectory(this.unwovenclassesdir);
-            FileUtils.copyDirectory(fromdir, todir, false);
+            FileUtils.cleanDirectory(dest);
+            FileUtils.copyDirectory(from, dest, false);
         } catch (final IOException ex) {
             throw new MojoFailureException(
                 String.format(
                     "Exception when copying unwoven classes to %s: %s",
-                    this.unwovenclassesdir, ex.getMessage()
+                    this.unwoven, ex.getMessage()
                 ),
                 ex
             );
