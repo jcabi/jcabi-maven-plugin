@@ -108,7 +108,7 @@ public final class UnwovenClassesTest {
             Matchers.is(true)
         );
     }
- 
+
     /**
      * Clean resources after tests run.
      * @throws Exception If something goes wrong
