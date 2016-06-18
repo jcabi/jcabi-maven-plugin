@@ -56,7 +56,7 @@ public final class UnwovenClassesTest {
     @Test
     public void copiesUnwovenClasses() throws Exception {
         final File unwoven = new File("src/test/resources/unwovendir");
-    	new UnwovenClasses(
+        new UnwovenClasses(
             unwoven,
             new File(CLASSES),
             "process-classes"
