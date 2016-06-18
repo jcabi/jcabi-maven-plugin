@@ -57,7 +57,7 @@ public final class UnwovenClassesTest {
     private static final String UNWOVEN = "src/test/resources/unwoven";
 
     /**
-     * Clean also before just in case <b>AfterClass</b> failes.
+     * Clean also before just in case <b>AfterClass</b> fails.
      */
     @BeforeClass
     public static void cleanBefore() {
@@ -110,7 +110,7 @@ public final class UnwovenClassesTest {
     }
  
     /**
-     * Clean also before just in case <b>AfterClass</b> failes.
+     * Clean resources after tests run.
      * @throws Exception If something goes wrong
      */
     @AfterClass
