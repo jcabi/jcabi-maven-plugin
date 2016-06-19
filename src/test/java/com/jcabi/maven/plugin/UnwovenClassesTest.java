@@ -60,7 +60,7 @@ public final class UnwovenClassesTest {
      * @throws Exception If something goes wrong
      */
     @BeforeClass
-    public static void cleanBefore() throws Exception {
+    private static void cleanBefore() throws Exception {
         deleteResourceDirs();
     }
 
@@ -109,7 +109,7 @@ public final class UnwovenClassesTest {
      * @throws Exception If something goes wrong
      */
     @AfterClass
-    public static void cleanAfter() throws Exception {
+    private static void cleanAfter() throws Exception {
         deleteResourceDirs();
     }
 
@@ -117,7 +117,7 @@ public final class UnwovenClassesTest {
      * Delete test resource directories (for cleanup).
      * @throws Exception If something goes wrong
      */
-    public static void deleteResourceDirs() throws Exception {
+    private static void deleteResourceDirs() throws Exception {
         FileUtils.deleteDirectory(new File("src/test/resources/unwoven-test"));
         FileUtils.deleteDirectory(new File(UNWOVEN));
     }
