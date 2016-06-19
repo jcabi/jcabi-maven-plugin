@@ -60,7 +60,7 @@ public final class UnwovenClassesTest {
      * @throws Exception If something goes wrong
      */
     @BeforeClass
-    private static void cleanBefore() throws Exception {
+    public static void cleanBefore() throws Exception {
         deleteResourceDirs();
     }
 
@@ -109,7 +109,7 @@ public final class UnwovenClassesTest {
      * @throws Exception If something goes wrong
      */
     @AfterClass
-    private static void cleanAfter() throws Exception {
+    public static void cleanAfter() throws Exception {
         deleteResourceDirs();
     }
 
