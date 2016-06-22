@@ -83,6 +83,12 @@
                                                                                                                                                                 <ul>
                                                                     </ul>
                                                     </li>
+                                                                                                                        <li >
+                            <span>                        <a href="example-unwoven.html" title="Copy unwoven classes">Copy unwoven classes</a>
+        </span>
+                                                                                                                                                                <ul>
+                                                                    </ul>
+                                                    </li>
                                                                                         </ul>
                                                     </li>
                                             <li>
@@ -127,7 +133,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-0.14/index.html" title="JavaDocs">JavaDocs</a>
+                            <span>                        <a href="apidocs-0.14.1/index.html" title="JavaDocs">JavaDocs</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -172,13 +178,13 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">0.14</strong>
+                                    <strong itemprop="version">0.14.1</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2016-03-05T11:29:48Z">
+                                    <time itemprop="datePublished" datetime="2016-06-22T11:39:54Z">
                                         
-                                        05-Mar-2016
+                                        22-Jun-2016
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -254,12 +260,12 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
-<td>2</td>
+<td>4</td>
 <td>0</td>
 <td>0</td>
 <td>1</td>
-<td>50%</td>
-<td>0.016</td></tr></table><br />
+<td>75%</td>
+<td>0.256</td></tr></table><br />
 <p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></div>
 <div class="section">
 <h2><a name="Package_List"></a>Package List</h2><a name="Package_List"></a>
@@ -275,12 +281,12 @@ function toggleDisplay(elementId) {
 <th>Time</th></tr>
 <tr class="b">
 <td><a href="#com.jcabi.maven.plugin">com.jcabi.maven.plugin</a></td>
-<td>2</td>
+<td>4</td>
 <td>0</td>
 <td>0</td>
 <td>1</td>
-<td>50%</td>
-<td>0.016</td></tr></table><br />
+<td>75%</td>
+<td>0.256</td></tr></table><br />
 <p>Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.</p>
 <div class="section">
 <h3><a name="com.jcabi.maven.plugin"></a>com.jcabi.maven.plugin</h3><a name="com.jcabi.maven.plugin"></a>
@@ -295,6 +301,15 @@ function toggleDisplay(elementId) {
 <th>Success Rate</th>
 <th>Time</th></tr>
 <tr class="b">
+<td><a href="#com.jcabi.maven.pluginAjcMojoTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.maven.pluginAjcMojoTest">AjcMojoTest</a></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>100%</td>
+<td>0.077</td></tr>
+<tr class="a">
 <td><a href="#com.jcabi.maven.pluginVersionalizeMojoTest"><img src="images/icon_warning_sml.gif" alt="" /></a></td>
 <td><a href="#com.jcabi.maven.pluginVersionalizeMojoTest">VersionalizeMojoTest</a></td>
 <td>1</td>
@@ -303,18 +318,25 @@ function toggleDisplay(elementId) {
 <td>1</td>
 <td>0%</td>
 <td>0</td></tr>
-<tr class="a">
-<td><a href="#com.jcabi.maven.pluginAjcMojoTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
-<td><a href="#com.jcabi.maven.pluginAjcMojoTest">AjcMojoTest</a></td>
-<td>1</td>
+<tr class="b">
+<td><a href="#com.jcabi.maven.pluginUnwovenClassesTest"><img src="images/icon_success_sml.gif" alt="" /></a></td>
+<td><a href="#com.jcabi.maven.pluginUnwovenClassesTest">UnwovenClassesTest</a></td>
+<td>2</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100%</td>
-<td>0.016</td></tr></table></div><br /></div>
+<td>0.179</td></tr></table></div><br /></div>
 <div class="section">
 <h2><a name="Test_Cases"></a>Test Cases</h2><a name="Test_Cases"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p>
+<div class="section">
+<h3><a name="AjcMojoTest"></a>AjcMojoTest</h3><a name="com.jcabi.maven.pluginAjcMojoTest"></a>
+<table border="1" class="bodyTable">
+<tr class="a">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>testClassFilesWeaving</td>
+<td>0.077</td></tr></table></div>
 <div class="section">
 <h3><a name="VersionalizeMojoTest"></a>VersionalizeMojoTest</h3><a name="com.jcabi.maven.pluginVersionalizeMojoTest"></a>
 <table border="1" class="bodyTable">
@@ -328,12 +350,16 @@ function toggleDisplay(elementId) {
 <td>skipped</td>
 <td></td></tr></table></div>
 <div class="section">
-<h3><a name="AjcMojoTest"></a>AjcMojoTest</h3><a name="com.jcabi.maven.pluginAjcMojoTest"></a>
+<h3><a name="UnwovenClassesTest"></a>UnwovenClassesTest</h3><a name="com.jcabi.maven.pluginUnwovenClassesTest"></a>
 <table border="1" class="bodyTable">
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" alt="" /></td>
-<td>testClassFilesWeaving</td>
-<td>0.016</td></tr></table></div><br /></div>
+<td>copiesUnwovenClasses</td>
+<td>0.097</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" alt="" /></td>
+<td>copiesUnwovenTestClasses</td>
+<td>0.082</td></tr></table></div><br /></div>
 <div class="section">
 <h2><a name="Failure_Details"></a>Failure Details</h2><a name="Failure_Details"></a>
 <p>[<a href="#Summary">Summary</a>] [<a href="#Package_List">Package List</a>] [<a href="#Test_Cases">Test Cases</a>]</p><br />

@@ -83,6 +83,12 @@
                                                                                                                                                                 <ul>
                                                                     </ul>
                                                     </li>
+                                                                                                                        <li >
+                            <span>                        <a href="example-unwoven.html" title="Copy unwoven classes">Copy unwoven classes</a>
+        </span>
+                                                                                                                                                                <ul>
+                                                                    </ul>
+                                                    </li>
                                                                                         </ul>
                                                     </li>
                                             <li>
@@ -122,13 +128,13 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">0.14</strong>
+                                    <strong itemprop="version">0.14.1</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2016-03-05T11:30:13Z">
+                                    <time itemprop="datePublished" datetime="2016-06-22T11:40:29Z">
                                         
-                                        05-Mar-2016
+                                        22-Jun-2016
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -180,7 +186,7 @@
       
 <p><b>Full name</b>:</p>
       
-<p>com.jcabi:jcabi-maven-plugin:0.14:ajc</p>
+<p>com.jcabi:jcabi-maven-plugin:0.14.1:ajc</p>
       
 <p><b>Description</b>:</p>
       
@@ -241,6 +247,17 @@
           
 <tr class="b">
             
+<td><b><a href="#disableCopy">disableCopy</a></b></td>
+            
+<td><tt>boolean</tt></td>
+            
+<td><tt>0.7.16</tt></td>
+            
+<td>Disables the copy of unwoven files to unwovenClassesDir.<br /><b>Default value is</b>: <tt>false</tt>.<br /></td>
+          </tr>
+          
+<tr class="a">
+            
 <td><b><a href="#log">log</a></b></td>
             
 <td><tt>String</tt></td>
@@ -248,6 +265,17 @@
 <td><tt>0.7.16</tt></td>
             
 <td>Ajc compiler message log.<br /><b>Default value is</b>: <tt>${project.build.directory}/jcabi-ajc.log</tt>.<br /><b>User property is</b>: <tt>log</tt>.</td>
+          </tr>
+          
+<tr class="b">
+            
+<td><b><a href="#scopes">scopes</a></b></td>
+            
+<td><tt>String[]</tt></td>
+            
+<td><tt>0.7.16</tt></td>
+            
+<td>Scopes to take into account.<br /></td>
           </tr>
           
 <tr class="a">
@@ -291,7 +319,7 @@
             
 <td><tt>0.7.16</tt></td>
             
-<td>Directory in which uwoven classes are copied.<br /><b>Default value is</b>: <tt>${project.build.outputDirectory}</tt>.<br /></td>
+<td>Directory in which uwoven classes are copied.<br /><b>Default value is</b>: <tt>${project.build.directory}/unwoven</tt>.<br /></td>
           </tr>
         </table>
       </div>
@@ -325,6 +353,20 @@
           
 <li><b>Default</b>: <tt>${project.build.outputDirectory}</tt></li>
         </ul><hr />
+<p><b><a name="disableCopy">disableCopy</a>:</b></p>
+        
+<div>Disables the copy of unwoven files to unwovenClassesDir.</div>
+        
+<ul>
+          
+<li><b>Type</b>: <tt>boolean</tt></li>
+          
+<li><b>Since</b>: <tt>0.7.16</tt></li>
+          
+<li><b>Required</b>: <tt>No</tt></li>
+          
+<li><b>Default</b>: <tt>false</tt></li>
+        </ul><hr />
 <p><b><a name="log">log</a>:</b></p>
         
 <div>Ajc compiler message log.</div>
@@ -340,6 +382,18 @@
 <li><b>User Property</b>: <tt>log</tt></li>
           
 <li><b>Default</b>: <tt>${project.build.directory}/jcabi-ajc.log</tt></li>
+        </ul><hr />
+<p><b><a name="scopes">scopes</a>:</b></p>
+        
+<div>Scopes to take into account.</div>
+        
+<ul>
+          
+<li><b>Type</b>: <tt>java.lang.String[]</tt></li>
+          
+<li><b>Since</b>: <tt>0.7.16</tt></li>
+          
+<li><b>Required</b>: <tt>No</tt></li>
         </ul><hr />
 <p><b><a name="source">source</a>:</b></p>
         
@@ -399,7 +453,7 @@
           
 <li><b>Required</b>: <tt>No</tt></li>
           
-<li><b>Default</b>: <tt>${project.build.outputDirectory}</tt></li>
+<li><b>Default</b>: <tt>${project.build.directory}/unwoven</tt></li>
         </ul>
       </div>
     </div>
