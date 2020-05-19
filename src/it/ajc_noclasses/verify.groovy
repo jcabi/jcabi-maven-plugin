@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2017, jcabi.com
+ * Copyright (c) 2012-2020, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  */
 
 /*
- No classes were found in classesDirectory, so no unwoven classes to copy in 
+ No classes were found in classesDirectory, so no unwoven classes to copy in
  unwovenClassesDir.
 */
 
