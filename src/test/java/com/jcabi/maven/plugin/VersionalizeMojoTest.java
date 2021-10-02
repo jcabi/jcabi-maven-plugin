@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2020, jcabi.com
  * All rights reserved.
  *
@@ -29,24 +29,21 @@
  */
 package com.jcabi.maven.plugin;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test case for {@link VersionalizeMojo}.
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
+ *
+ * @since 0.1
  */
 public final class VersionalizeMojoTest {
 
-    /**
-     * VersionalizeMojo can skip execution when flag is set.
-     * @throws Exception If something is wrong
-     */
     @Test
-    @org.junit.Ignore
-    public void skipsExecutionWhenRequired() throws Exception {
-        final VersionalizeMojo mojo = new VersionalizeMojo();
-        mojo.execute();
+    @Disabled
+    public void skipsExecutionWhenRequired() {
+        new Mojo<>(VersionalizeMojo.class)
+            .execute();
     }
 
 }

@@ -33,14 +33,13 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link UnwovenClasses).
- * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ *
  * @since 0.15
  */
 public final class UnwovenClassesTest {
@@ -55,23 +54,17 @@ public final class UnwovenClassesTest {
      */
     private static final String UNWOVEN = "src/test/resources/unwoven";
 
-    /**
-     * Clean also before just in case <b>AfterClass</b> fails.
-     * @throws Exception If something goes wrong
-     */
-    @BeforeClass
+    @BeforeEach
     public static void cleanBefore() throws Exception {
-        deleteResourceDirs();
+        UnwovenClassesTest.deleteResourceDirs();
     }
 
-    /**
-     * UnwovenClasses can copy compiled classes to a destination directory.
-     * @throws Exception If something goes wrong
-     */
     @Test
-    public void copiesUnwovenClasses() throws Exception {
+    void copiesUnwovenClasses() throws Exception {
         new UnwovenClasses(
-            new File(UNWOVEN), new File(CLASSES), "process-classes"
+            new File(UnwovenClassesTest.UNWOVEN),
+            new File(UnwovenClassesTest.CLASSES),
+            "process-classes"
         ).copy();
         MatcherAssert.assertThat(
             new File("src/test/resources/unwoven/MyPojo.txt").exists(),
@@ -88,9 +81,11 @@ public final class UnwovenClassesTest {
      * @throws Exception If something goes wrong
      */
     @Test
-    public void copiesUnwovenTestClasses() throws Exception {
+    void copiesUnwovenTestClasses() throws Exception {
         new UnwovenClasses(
-            new File(UNWOVEN), new File(CLASSES), "process-test-classes"
+            new File(UnwovenClassesTest.UNWOVEN),
+            new File(UnwovenClassesTest.CLASSES),
+            "process-test-classes"
         ).copy();
         MatcherAssert.assertThat(
             new File("src/test/resources/unwoven-test/MyPojo.txt").exists(),
@@ -108,9 +103,9 @@ public final class UnwovenClassesTest {
      * Clean resources after tests run.
      * @throws Exception If something goes wrong
      */
-    @AfterClass
+    @AfterEach
     public static void cleanAfter() throws Exception {
-        deleteResourceDirs();
+        UnwovenClassesTest.deleteResourceDirs();
     }
 
     /**
@@ -119,6 +114,6 @@ public final class UnwovenClassesTest {
      */
     private static void deleteResourceDirs() throws Exception {
         FileUtils.deleteDirectory(new File("src/test/resources/unwoven-test"));
-        FileUtils.deleteDirectory(new File(UNWOVEN));
+        FileUtils.deleteDirectory(new File(UnwovenClassesTest.UNWOVEN));
     }
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2020, jcabi.com
  * All rights reserved.
  *
@@ -27,7 +27,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.jcabi.maven.plugin;
 
 import com.jcabi.log.Logger;
@@ -40,11 +39,10 @@ import org.apache.maven.plugin.MojoFailureException;
  * Operations on the unwoven classes, like storing them in a separate
  * location from the woven ones. Unwoven classes are classes which weren't
  * yet weaved by the aspect weaver.
- * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ *
  * @since 0.15
  */
-public final class UnwovenClasses {
+final class UnwovenClasses {
 
     /**
      * Directory where unwoven classes are saved.
@@ -67,7 +65,7 @@ public final class UnwovenClasses {
      * @param cls Directory where the classes are found
      * @param phs Maven execution phase
      */
-    public UnwovenClasses(final File uwvn, final File cls,
+    UnwovenClasses(final File uwvn, final File cls,
         final String phs) {
         this.unwoven = uwvn;
         this.classes = cls;
@@ -80,14 +78,14 @@ public final class UnwovenClasses {
      * @throws MojoFailureException If there is an IOException when
      *  copying the files
      */
-    public void copy() throws MojoFailureException {
+    void copy() throws MojoFailureException {
         if ("process-classes".equals(this.phase)) {
             this.unwoven.mkdirs();
             Logger.info(
                 this, "Unwoven classes will be copied to %s",
                 this.unwoven
             );
-            this.copyContents(this.classes, this.unwoven);
+            UnwovenClasses.copyContents(this.classes, this.unwoven);
         } else if ("process-test-classes".equals(this.phase)) {
             final String suffix = "-test";
             final File unwovenTests = new File(
@@ -98,7 +96,7 @@ public final class UnwovenClasses {
                 this, "Unwoven test classes will be copied to %s",
                 unwovenTests
             );
-            this.copyContents(this.classes, unwovenTests);
+            UnwovenClasses.copyContents(this.classes, unwovenTests);
         }
     }
 
@@ -109,7 +107,7 @@ public final class UnwovenClasses {
      * @throws MojoFailureException If something goes wrong while
      *  cleaning the destination director or copying files to it
      */
-    private void copyContents(
+    private static void copyContents(
         final File from, final File dest) throws MojoFailureException {
         try {
             FileUtils.cleanDirectory(dest);

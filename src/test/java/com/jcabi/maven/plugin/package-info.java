@@ -31,8 +31,6 @@
 /**
  * Supplementary Maven plugin, tests.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.7.16
  */
 package com.jcabi.maven.plugin;

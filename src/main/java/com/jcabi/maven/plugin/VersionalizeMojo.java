@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2020, jcabi.com
  * All rights reserved.
  *
@@ -34,13 +34,12 @@ import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-import javax.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
@@ -60,8 +59,6 @@ import org.slf4j.impl.StaticLoggerBinder;
 /**
  * Versionalize Java packages.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
- * @version $Id$
  * @since 0.7.16
  */
 @Mojo(
@@ -69,8 +66,6 @@ import org.slf4j.impl.StaticLoggerBinder;
     defaultPhase = LifecyclePhase.PREPARE_PACKAGE,
     threadSafe = true
 )
-@ToString
-@EqualsAndHashCode(callSuper = false)
 @Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 public final class VersionalizeMojo extends AbstractMojo {
@@ -119,7 +114,7 @@ public final class VersionalizeMojo extends AbstractMojo {
      * @param dir The destination directory
      * @return The text
      */
-    private String text(@NotNull final File dir) {
+    private String text(final File dir) {
         final StringBuilder text = new StringBuilder(0)
             .append(String.format("Build Number: %s%n", this.buildNumber))
             .append(
@@ -131,7 +126,8 @@ public final class VersionalizeMojo extends AbstractMojo {
             .append(
                 String.format(
                     "Build Date: %s%n%n",
-                    DateFormatUtils.ISO_DATETIME_FORMAT.format(new Date())
+                    DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT
+                        .format(new Date())
                 )
             );
         for (final String name : VersionalizeMojo.files(dir, "*")) {
@@ -152,7 +148,7 @@ public final class VersionalizeMojo extends AbstractMojo {
      * @param dest Destination
      * @throws IOException If some IO problem
      */
-    private void versionalize(@NotNull final File src, @NotNull final File dest)
+    private void versionalize(final File src, final File dest)
         throws IOException {
         final Collection<File> dirs = FileUtils.listFilesAndDirs(
             src,
@@ -180,7 +176,10 @@ public final class VersionalizeMojo extends AbstractMojo {
             if (version.getParentFile().mkdirs()) {
                 Logger.info(this, "created dir %s", version.getParentFile());
             }
-            FileUtils.write(version, this.text(ddir));
+            Files.write(
+                version.toPath(),
+                this.text(ddir).getBytes(StandardCharsets.UTF_8)
+            );
             Logger.info(this, "File %s added", version);
         }
     }
