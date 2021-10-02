@@ -30,7 +30,11 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.jcabi</groupId>
+  <parent>
+    <groupId>com.jcabi</groupId>
+    <artifactId>jcabi</artifactId>
+    <version>1.30.0</version>
+  </parent>
   <artifactId>jcabi-test</artifactId>
   <name>test</name>
   <version>1.0</version>
@@ -39,12 +43,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <jcabi.version>0.7.16</jcabi.version>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>0.11.6</version>
-      <scope>provided</scope>
-    </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-aspects</artifactId>

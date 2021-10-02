@@ -55,7 +55,7 @@ public final class UnwovenClassesTest {
     private static final String UNWOVEN = "src/test/resources/unwoven";
 
     @BeforeEach
-    public static void cleanBefore() throws Exception {
+    public void cleanBefore() throws Exception {
         UnwovenClassesTest.deleteResourceDirs();
     }
 
@@ -76,10 +76,6 @@ public final class UnwovenClassesTest {
         );
     }
 
-    /**
-     * UnwovenClasses can copy test classes to a destination directory.
-     * @throws Exception If something goes wrong
-     */
     @Test
     void copiesUnwovenTestClasses() throws Exception {
         new UnwovenClasses(
@@ -99,19 +95,11 @@ public final class UnwovenClassesTest {
         );
     }
 
-    /**
-     * Clean resources after tests run.
-     * @throws Exception If something goes wrong
-     */
     @AfterEach
-    public static void cleanAfter() throws Exception {
+    public void cleanAfter() throws Exception {
         UnwovenClassesTest.deleteResourceDirs();
     }
 
-    /**
-     * Delete test resource directories (for cleanup).
-     * @throws Exception If something goes wrong
-     */
     private static void deleteResourceDirs() throws Exception {
         FileUtils.deleteDirectory(new File("src/test/resources/unwoven-test"));
         FileUtils.deleteDirectory(new File(UnwovenClassesTest.UNWOVEN));

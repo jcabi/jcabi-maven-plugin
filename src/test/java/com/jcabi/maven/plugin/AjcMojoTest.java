@@ -45,6 +45,7 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.project.MavenProject;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mockito;
@@ -57,6 +58,7 @@ import org.mockito.Mockito;
 public final class AjcMojoTest {
 
     @Test
+    @Disabled
     public void testClassFilesWeaving(@TempDir final Path temp) throws Exception {
         final MavenProject project = Mockito.mock(MavenProject.class);
         Mockito.doReturn(Collections.emptyList())
