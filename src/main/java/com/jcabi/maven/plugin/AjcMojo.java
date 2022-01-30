@@ -75,7 +75,7 @@ import org.slf4j.impl.StaticLoggerBinder;
  * AspectJ compile CLASS files.
  *
  * @since 0.7.16
- * @link <a href="http://www.eclipse.org/aspectj/doc/next/devguide/ajc-ref.html">AJC compiler manual</a>
+ * @see <a href="http://www.eclipse.org/aspectj/doc/next/devguide/ajc-ref.html">AJC compiler manual</a>
  */
 @Mojo(
     name = "ajc",
@@ -83,9 +83,7 @@ import org.slf4j.impl.StaticLoggerBinder;
     threadSafe = true,
     requiresDependencyResolution = ResolutionScope.COMPILE
 )
-@SuppressWarnings({
-    "PMD.TooManyMethods", "PMD.ExcessiveImports", "PMD.GodClass"
-})
+@SuppressWarnings({ "PMD.TooManyMethods", "PMD.ExcessiveImports", "PMD.GodClass" })
 public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**

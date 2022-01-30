@@ -86,6 +86,14 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjtools</artifactId>
       <version>1.9.8.M1</version>
@@ -121,14 +129,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <artifactId>maven-plugin-testing-harness</artifactId>
       <version>3.3.0</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -170,6 +170,15 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <scope>runtime</scope>
     </dependency>
   </dependencies>
+  <reporting>
+    <plugins>
+      <plugin>
+        <!-- upgrade jcabi-parent to the latest version and delete this -->
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.6.0</version>
+      </plugin>
+    </plugins>
+  </reporting>
   <build>
     <plugins>
       <plugin>
