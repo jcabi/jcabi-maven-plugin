@@ -29,7 +29,6 @@
  */
 package com.jcabi.maven.plugin;
 
-import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.FileFilter;
@@ -39,7 +38,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
@@ -49,7 +47,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -66,29 +63,23 @@ import org.slf4j.impl.StaticLoggerBinder;
     defaultPhase = LifecyclePhase.PREPARE_PACKAGE,
     threadSafe = true
 )
-@Loggable(Loggable.DEBUG)
 @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 public final class VersionalizeMojo extends AbstractMojo {
 
     /**
      * Maven project.
      */
-    @Component
+    @Parameter(defaultValue = "${project}", readonly = true)
     private transient MavenProject project;
 
     /**
      * Build number.
      * @checkstyle MemberNameCheck (10 lines)
      */
-    @Parameter(
-        property = "buildNumber",
-        required = false,
-        readonly = false
-    )
+    @Parameter(property = "buildNumber")
     private transient String buildNumber;
 
     @Override
-    @Loggable(value = Loggable.DEBUG, limit = 1, unit = TimeUnit.MINUTES)
     public void execute() throws MojoFailureException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
         final File src = new File(this.project.getBuild().getSourceDirectory());
@@ -114,6 +105,7 @@ public final class VersionalizeMojo extends AbstractMojo {
      * @param dir The destination directory
      * @return The text
      */
+    @SuppressWarnings("PMD.ConsecutiveLiteralAppends")
     private String text(final File dir) {
         final StringBuilder text = new StringBuilder(0)
             .append(String.format("Build Number: %s%n", this.buildNumber))
@@ -202,7 +194,7 @@ public final class VersionalizeMojo extends AbstractMojo {
     private static Collection<String> files(final File dir, final String mask) {
         final FileFilter filter = new WildcardFileFilter(mask);
         final File[] files = dir.listFiles(filter);
-        final Collection<String> names = new ArrayList<String>(files.length);
+        final Collection<String> names = new ArrayList<>(files.length);
         for (final File file : files) {
             names.add(file.getName());
         }

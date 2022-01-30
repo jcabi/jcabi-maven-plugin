@@ -37,14 +37,14 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <bannerLeft>
     <name>jcabi</name>
     <src>https://www.jcabi.com/logo-square.svg</src>
-    <href>http://www.jcabi.com/</href>
+    <href>https://www.jcabi.com/</href>
     <width>64</width>
     <height>64</height>
   </bannerLeft>
   <googleAnalyticsAccountId>UA-1963507-23</googleAnalyticsAccountId>
   <body>
     <head>
-      &lt;link href="http://img.jcabi.com/favicon.ico" rel="shortcut icon"/&gt;
+      &lt;link href="https://img.jcabi.com/favicon.ico" rel="shortcut icon"/&gt;
       &lt;link href="https://plus.google.com/u/0/114792568016408327418?rel=author" rel="author"/&gt;
     </head>
     <menu name="Overview">

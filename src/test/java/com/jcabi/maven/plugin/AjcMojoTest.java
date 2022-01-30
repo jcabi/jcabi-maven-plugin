@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2020, jcabi.com
  * All rights reserved.
  *
@@ -54,6 +54,7 @@ import org.mockito.Mockito;
  * Test case for {@link AjcMojo}.
  *
  * @since 0.1
+ * @checkstyle ExecutableStatementCountCheck (200 lines)
  */
 public final class AjcMojoTest {
 
@@ -71,7 +72,7 @@ public final class AjcMojoTest {
         Mockito.doReturn(temp.resolve("xx").toFile().toString())
             .when(repo).getBasedir();
         Mockito.doReturn(repo).when(session).getLocalRepository();
-        final Path java = javas.resolve( "sample/Foo.java");
+        final Path java = javas.resolve("sample/Foo.java");
         java.getParent().toFile().mkdirs();
         Files.write(
             java,

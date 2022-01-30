@@ -29,8 +29,6 @@
  */
 package com.jcabi.maven.plugin;
 
-import com.jcabi.aspects.Cacheable;
-import com.jcabi.aspects.Loggable;
 import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +49,6 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -86,7 +83,6 @@ import org.slf4j.impl.StaticLoggerBinder;
     threadSafe = true,
     requiresDependencyResolution = ResolutionScope.COMPILE
 )
-@Loggable(Loggable.DEBUG)
 @SuppressWarnings({
     "PMD.TooManyMethods", "PMD.ExcessiveImports", "PMD.GodClass"
 })
@@ -100,82 +96,60 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
     /**
      * Maven project.
      */
-    @Component
+    @Parameter(defaultValue = "${project}", readonly = true)
     private transient MavenProject project;
 
     /**
      * Maven execution.
      */
-    @Component
+    @Parameter(defaultValue = "${mojoExecution}", readonly = true)
     private transient MojoExecution execution;
 
     /**
      * Maven session.
      */
-    @Component
+    @Parameter(defaultValue = "${session}", readonly = true)
     private transient MavenSession session;
 
     /**
      * Compiled directory.
      * @checkstyle MemberNameCheck (7 lines)
      */
-    @Parameter(
-        required = false,
-        readonly = false,
-        defaultValue = "${project.build.outputDirectory}"
-    )
+    @Parameter(defaultValue = "${project.build.outputDirectory}")
     private transient File classesDirectory;
 
     /**
      * Directory in which uwoven classes are copied.
      * @checkstyle MemberNameCheck (7 lines)
      */
-    @Parameter(
-        required = false,
-        readonly = false,
-        defaultValue = "${project.build.directory}/unwoven"
-    )
+    @Parameter(defaultValue = "${project.build.directory}/unwoven")
     private transient File unwovenClassesDir;
 
     /**
      * Disables the copy of unwoven files to unwovenClassesDir.
      * @checkstyle MemberNameCheck (7 lines)
      */
-    @Parameter(
-        required = false,
-        readonly = false,
-        defaultValue = "false"
-    )
+    @Parameter(defaultValue = "false")
     private transient boolean disableCopy;
 
     /**
      * Directories with aspects.
      * @checkstyle MemberNameCheck (6 lines)
      */
-    @Parameter(
-        required = false,
-        readonly = false
-    )
+    @Parameter
     private transient File[] aspectDirectories;
 
     /**
      * Temporary directory.
      * @checkstyle MemberNameCheck (7 lines)
      */
-    @Parameter(
-        defaultValue = "${project.build.directory}/jcabi-ajc",
-        required = false,
-        readonly = false
-    )
+    @Parameter(defaultValue = "${project.build.directory}/jcabi-ajc")
     private transient File tempDirectory;
 
     /**
      * Scopes to take into account.
      */
-    @Parameter(
-        required = false,
-        readonly = false
-    )
+    @Parameter
     private transient String[] scopes;
 
     /**
@@ -186,23 +160,13 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
     /**
      * Java source version.
      */
-    @Parameter(
-        required = false,
-        readonly = false,
-        property = "source",
-        defaultValue = "1.6"
-    )
+    @Parameter(property = "source", defaultValue = "1.8")
     private transient String source;
 
     /**
      * Java target version.
      */
-    @Parameter(
-        required = false,
-        readonly = false,
-        property = "target",
-        defaultValue = "1.6"
-    )
+    @Parameter(property = "target", defaultValue = "1.8")
     private transient String target;
 
     /**
@@ -232,7 +196,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
     }
 
     @Override
-    @Loggable
     public void execute() throws MojoFailureException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
         final ArtifactHandler handler = this.project.getArtifact()
@@ -254,7 +217,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         }
         if (this.hasClasses() || this.hasSourceroots()) {
             try {
-                this.executeAJC();
+                this.executeAjc();
             } catch (final IOException ex) {
                 throw new IllegalStateException(ex);
             }
@@ -270,9 +233,10 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
     /**
      * Process classes and source roots files with AJC.
      *
-     * @throws MojoFailureException if AJC failed to process files
+     * @throws MojoFailureException If AJC failed to process files
+     * @throws IOException If fails
      */
-    private void executeAJC() throws MojoFailureException, IOException {
+    private void executeAjc() throws MojoFailureException, IOException {
         if (this.tempDirectory.mkdirs()) {
             Logger.info(this, "Created temp dir %s", this.tempDirectory);
         }
@@ -342,12 +306,10 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * Get classpath for AJC.
      * @return Classpath
      */
-    @Cacheable(forever = true)
-    @Loggable(value = Loggable.DEBUG, trim = false)
     private Collection<String> classpath() {
         final Collection<String> scps;
         if (this.scopes == null) {
-            scps = this.scope();
+            scps = AjcMojo.scope();
         } else {
             scps = Arrays.asList(this.scopes);
         }
@@ -409,9 +371,9 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * Default scopes.
      * @return List of scopes.
      */
-    private Collection<String> scope() {
+    private static Collection<String> scope() {
         final List<String> scps;
-        if (this.eclipseAether()) {
+        if (AjcMojo.eclipseAether()) {
             scps = Arrays.asList(
                 JavaScopes.COMPILE,
                 JavaScopes.PROVIDED,
@@ -433,7 +395,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * If environment is inside Eclipse Aether.
      * @return True if Eclipse Aether.
      */
-    private boolean eclipseAether() {
+    private static boolean eclipseAether() {
         boolean found = false;
         try {
             Thread.currentThread().getContextClassLoader()
@@ -448,7 +410,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * Get locations of all aspect libraries for AJC.
      * @return Classpath
      */
-    @Cacheable(forever = true)
     private String aspectpath() {
         return new StringBuilder(0)
             .append(StringUtils.join(this.classpath(), AjcMojo.SEP))
@@ -462,7 +423,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * @return Directories separated
      * @throws IOException If fails
      */
-    @Cacheable(forever = true)
     private String sourceroots() throws IOException {
         final String path;
         if (this.aspectDirectories == null
@@ -495,10 +455,10 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * @return A Collection of .class files
      */
     private Collection<File> listClasses() {
-        final IOFileFilter classesFilter = FileFilterUtils
+        final IOFileFilter filter = FileFilterUtils
             .suffixFileFilter(".class");
         return FileUtils.listFiles(
-            this.classesDirectory, classesFilter, FileFilterUtils
+            this.classesDirectory, filter, FileFilterUtils
                 .directoryFileFilter()
         );
     }
@@ -518,7 +478,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * @return List of them
      */
     private static Collection<File> files(final File dir) {
-        final Collection<File> files = new LinkedList<File>();
+        final Collection<File> files = new LinkedList<>();
         final Collection<File> all = FileUtils.listFiles(
             dir, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE
         );
@@ -563,7 +523,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
          * All messages seen so far.
          */
         private final transient Collection<IMessage> messages =
-            new CopyOnWriteArrayList<IMessage>();
+            new CopyOnWriteArrayList<>();
 
         @Override
         public boolean hasAnyMessage(final IMessage.Kind kind,

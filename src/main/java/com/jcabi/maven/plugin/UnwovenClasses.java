@@ -88,15 +88,15 @@ final class UnwovenClasses {
             UnwovenClasses.copyContents(this.classes, this.unwoven);
         } else if ("process-test-classes".equals(this.phase)) {
             final String suffix = "-test";
-            final File unwovenTests = new File(
+            final File tests = new File(
                 this.unwoven.getPath().concat(suffix)
             );
-            unwovenTests.mkdirs();
+            tests.mkdirs();
             Logger.info(
                 this, "Unwoven test classes will be copied to %s",
-                unwovenTests
+                tests
             );
-            UnwovenClasses.copyContents(this.classes, unwovenTests);
+            UnwovenClasses.copyContents(this.classes, tests);
         }
     }
 

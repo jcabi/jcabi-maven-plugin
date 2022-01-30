@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2012-2020, jcabi.com
  * All rights reserved.
  *
@@ -38,7 +38,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for {@link UnwovenClasses).
+ * Unit tests for {@link UnwovenClasses}.
  *
  * @since 0.15
  */
@@ -56,6 +56,11 @@ public final class UnwovenClassesTest {
 
     @BeforeEach
     public void cleanBefore() throws Exception {
+        UnwovenClassesTest.deleteResourceDirs();
+    }
+
+    @AfterEach
+    public void cleanAfter() throws Exception {
         UnwovenClassesTest.deleteResourceDirs();
     }
 
@@ -93,11 +98,6 @@ public final class UnwovenClassesTest {
             ).exists(),
             Matchers.is(true)
         );
-    }
-
-    @AfterEach
-    public void cleanAfter() throws Exception {
-        UnwovenClassesTest.deleteResourceDirs();
     }
 
     private static void deleteResourceDirs() throws Exception {

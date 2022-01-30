@@ -60,3 +60,5 @@ local.properties
 .texlipse
 .classpath
 .project
+
+ajcore*
