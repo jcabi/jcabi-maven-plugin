@@ -323,6 +323,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
             final ProjectBuildingRequest request =
                 new DefaultProjectBuildingRequest();
             request.setProject(this.project);
+            request.setRepositorySession(session.getProjectBuildingRequest().getRepositorySession());
             final DependencyNode node = builder.buildDependencyGraph(
                 request,
                 artifact -> scps.contains(artifact.getScope())
