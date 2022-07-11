@@ -63,10 +63,24 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-log</artifactId>
+      <version>0.20.0</version>
     </dependency>
     <dependency>
       <groupId>com.jcabi</groupId>
       <artifactId>jcabi-maven-slf4j</artifactId>
+      <version>0.10</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.8.0-alpha2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
@@ -88,10 +102,12 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
+      <version>2.11.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
+      <version>3.12.0</version>
     </dependency>
     <dependency>
       <groupId>org.aspectj</groupId>
@@ -263,6 +279,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
+            <version>0.19.0</version>
             <configuration>
               <excludes combine.children="append">
                 <exclude>checkstyle:/src/it-disabled/.*</exclude>
