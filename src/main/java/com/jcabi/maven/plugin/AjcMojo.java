@@ -68,6 +68,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
+import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.util.artifact.JavaScopes;
 import org.slf4j.impl.StaticLoggerBinder;
 
@@ -108,6 +109,12 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      */
     @Parameter(defaultValue = "${session}", readonly = true)
     private transient MavenSession session;
+
+    /**
+     * Rep session.
+     */
+    @Parameter(defaultValue = "${repositorySystemSession}", readonly = true)
+    private transient RepositorySystemSession rsession;
 
     /**
      * Compiled directory.
@@ -323,6 +330,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
             final ProjectBuildingRequest request =
                 new DefaultProjectBuildingRequest();
             request.setProject(this.project);
+            request.setRepositorySession(this.rsession);
             final DependencyNode node = builder.buildDependencyGraph(
                 request,
                 artifact -> scps.contains(artifact.getScope())
