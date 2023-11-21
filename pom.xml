@@ -138,7 +138,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>org.apache.maven.resolver</groupId>
       <artifactId>maven-resolver-api</artifactId>
-      <version>1.9.16</version>
+      <version>1.9.17</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
