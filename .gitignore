@@ -1,64 +1,51 @@
-target/
-.idea/
-*.iml
-
-# Created by https://www.gitignore.io
-
-### Java ###
-*.class
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
-
-### Maven ###
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-
-### Eclipse ###
-*.pydevproject
-.metadata
-.gradle
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.settings/
-.loadpath
-
-# External tool builders
-.externalToolBuilders/
-
-# Locally stored "Eclipse launch configurations"
-*.launch
 
 # CDT-specific
-.cproject
-
+# Created by https://www.gitignore.io
+# External tool builders
+# Locally stored "Eclipse launch configurations"
+# Mobile Tools for Java (J2ME)
 # PDT-specific
-.buildpath
-
-# sbteclipse plugin
-.target
-
+# Package Files #
 # TeXlipse plugin
-.texlipse
+# sbteclipse plugin
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+### Eclipse ###
+### Java ###
+### Maven ###
+*.bak
+*.class
+*.ear
+*.iml
+*.jar
+*.launch
+*.pydevproject
+*.swp
+*.tmp
+*.war
+*~.nib
+.DS_Store
+.buildpath
 .classpath
+.cproject
+.externalToolBuilders/
+.gradle
+.idea/
+.loadpath
+.metadata
+.mtj.tmp/
 .project
-
+.settings/
+.target
+.texlipse
 ajcore*
+bin/
+hs_err_pid*
+local.properties
+node_modules/
+pom.xml.next
+pom.xml.releaseBackup
+pom.xml.tag
+pom.xml.versionsBackup
+release.properties
+target/
+tmp/
