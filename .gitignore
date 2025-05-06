@@ -1,17 +1,18 @@
 
-# CDT-specific
-# Created by https://www.gitignore.io
-# External tool builders
-# Locally stored "Eclipse launch configurations"
-# Mobile Tools for Java (J2ME)
-# PDT-specific
-# Package Files #
-# TeXlipse plugin
-# sbteclipse plugin
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-### Eclipse ###
-### Java ###
-### Maven ###
+.buildpath
+.classpath
+.cproject
+.DS_Store
+.externalToolBuilders/
+.gradle
+.idea/
+.loadpath
+.metadata
+.mtj.tmp/
+.project
+.settings/
+.target
+.texlipse
 *.bak
 *.class
 *.ear
@@ -23,20 +24,19 @@
 *.tmp
 *.war
 *~.nib
-.DS_Store
-.buildpath
-.classpath
-.cproject
-.externalToolBuilders/
-.gradle
-.idea/
-.loadpath
-.metadata
-.mtj.tmp/
-.project
-.settings/
-.target
-.texlipse
+# CDT-specific
+# Created by https://www.gitignore.io
+# External tool builders
+# Locally stored "Eclipse launch configurations"
+# Mobile Tools for Java (J2ME)
+# Package Files #
+# PDT-specific
+# sbteclipse plugin
+# TeXlipse plugin
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+### Eclipse ###
+### Java ###
+### Maven ###
 ajcore*
 bin/
 hs_err_pid*
