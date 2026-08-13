@@ -169,6 +169,13 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
     )
     private transient String log;
 
+    /**
+     * Public ctor.
+     */
+    public AjcMojo() {
+        // nothing to initialize
+    }
+
     @Override
     public void contextualize(final Context context) throws ContextException {
         this.container = (PlexusContainer) context

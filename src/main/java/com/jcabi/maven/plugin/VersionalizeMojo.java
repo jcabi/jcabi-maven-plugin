@@ -54,6 +54,13 @@ public final class VersionalizeMojo extends AbstractMojo {
     @Parameter(property = "buildNumber")
     private transient String buildNumber;
 
+    /**
+     * Public ctor.
+     */
+    public VersionalizeMojo() {
+        // nothing to initialize
+    }
+
     @Override
     public void execute() throws MojoFailureException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
@@ -167,7 +174,9 @@ public final class VersionalizeMojo extends AbstractMojo {
      * @return List of Java file names
      */
     private static Collection<String> files(final File dir, final String mask) {
-        final FileFilter filter = new WildcardFileFilter(mask);
+        final FileFilter filter = WildcardFileFilter.builder()
+            .setWildcards(mask)
+            .get();
         final File[] files = dir.listFiles(filter);
         final Collection<String> names = new ArrayList<>(files.length);
         for (final File file : files) {
