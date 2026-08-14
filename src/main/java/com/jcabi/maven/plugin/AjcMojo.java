@@ -15,11 +15,9 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecution;
@@ -28,30 +26,22 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.DefaultProjectBuildingRequest;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.ProjectBuildingRequest;
-import org.apache.maven.shared.dependency.graph.DependencyGraphBuilder;
-import org.apache.maven.shared.dependency.graph.DependencyGraphBuilderException;
-import org.apache.maven.shared.dependency.graph.DependencyNode;
 import org.aspectj.bridge.IMessage;
 import org.aspectj.bridge.IMessageHolder;
 import org.aspectj.tools.ajc.Main;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
-import org.eclipse.aether.RepositorySystemSession;
-import org.eclipse.aether.util.artifact.JavaScopes;
 import org.slf4j.impl.StaticLoggerBinder;
 
 /**
  * AspectJ compile CLASS files.
  *
- * @since 0.7.16
  * @see <a href="http://www.eclipse.org/aspectj/doc/next/devguide/ajc-ref.html">AJC compiler manual</a>
+ * @since 0.7.16
  */
 @Mojo(
     name = "ajc",
@@ -59,7 +49,7 @@ import org.slf4j.impl.StaticLoggerBinder;
     threadSafe = true,
     requiresDependencyResolution = ResolutionScope.COMPILE
 )
-@SuppressWarnings({ "PMD.TooManyMethods", "PMD.ExcessiveImports", "PMD.GodClass" })
+@SuppressWarnings("PMD.TooManyMethods")
 public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**
@@ -84,12 +74,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      */
     @Parameter(defaultValue = "${session}", readonly = true)
     private transient MavenSession session;
-
-    /**
-     * Rep session.
-     */
-    @Parameter(defaultValue = "${repositorySystemSession}", readonly = true)
-    private transient RepositorySystemSession rsession;
 
     /**
      * Compiled directory.
@@ -185,9 +169,9 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
     @Override
     public void execute() throws MojoFailureException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
-        final ArtifactHandler handler = this.project.getArtifact()
-            .getArtifactHandler();
-        if (!"java".equalsIgnoreCase(handler.getLanguage())) {
+        if (!"java".equalsIgnoreCase(
+            this.project.getArtifact().getArtifactHandler().getLanguage()
+        )) {
             Logger.warn(
                 this,
                 // @checkstyle LineLength (1 line)
@@ -300,59 +284,15 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         } else {
             scps = Arrays.asList(this.scopes);
         }
-        final Collection<String> elements = new LinkedList<>();
-        try {
-            final DependencyGraphBuilder builder =
-                DependencyGraphBuilder.class.cast(
-                    this.container.lookup(
-                        DependencyGraphBuilder.class.getCanonicalName(),
-                        "default"
-                    )
-                );
-            final ProjectBuildingRequest request =
-                new DefaultProjectBuildingRequest();
-            request.setProject(this.project);
-            request.setRepositorySession(this.rsession);
-            final DependencyNode node = builder.buildDependencyGraph(
-                request,
-                artifact -> scps.contains(artifact.getScope())
-            );
-            elements.addAll(this.dependencies(node, scps));
-        } catch (final DependencyGraphBuilderException
-            | ComponentLookupException ex) {
-            throw new IllegalStateException(ex);
-        }
+        final Collection<String> elements = new LinkedList<>(
+            new Dependencies(
+                this.container,
+                this.project,
+                this.session
+            ).files(scps)
+        );
         elements.addAll(this.classpathElements);
         return elements;
-    }
-
-    /**
-     * Retrieve dependencies for from given node and scope.
-     * @param node Node to traverse.
-     * @param scps Scopes to use.
-     * @return Collection of dependency files.
-     */
-    private Collection<String> dependencies(final DependencyNode node,
-        final Collection<String> scps) {
-        final Artifact artifact = node.getArtifact();
-        final Collection<String> files = new LinkedList<>();
-        if (artifact.getScope() == null
-            || scps.contains(artifact.getScope())) {
-            if (artifact.getScope() == null) {
-                files.add(artifact.getFile().toString());
-            } else {
-                files.add(
-                    this.session.getLocalRepository().find(artifact).getFile()
-                        .toString()
-                );
-            }
-            for (final DependencyNode child : node.getChildren()) {
-                if (child.getArtifact().compareTo(node.getArtifact()) != 0) {
-                    files.addAll(this.dependencies(child, scps));
-                }
-            }
-        }
-        return files;
     }
 
     /**
@@ -360,38 +300,12 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * @return List of scopes.
      */
     private static Collection<String> scope() {
-        final List<String> scps;
-        if (AjcMojo.eclipseAether()) {
-            scps = Arrays.asList(
-                JavaScopes.COMPILE,
-                JavaScopes.PROVIDED,
-                JavaScopes.RUNTIME,
-                JavaScopes.SYSTEM
-            );
-        } else {
-            scps = Arrays.asList(
-                JavaScopes.COMPILE,
-                JavaScopes.RUNTIME,
-                JavaScopes.PROVIDED,
-                JavaScopes.SYSTEM
-            );
-        }
-        return scps;
-    }
-
-    /**
-     * If environment is inside Eclipse Aether.
-     * @return True if Eclipse Aether.
-     */
-    private static boolean eclipseAether() {
-        boolean found = false;
-        try {
-            Thread.currentThread().getContextClassLoader()
-                .loadClass("org.sonatype.aether.graph.DependencyFilter");
-        } catch (final ClassNotFoundException ex) {
-            found = true;
-        }
-        return found;
+        return Arrays.asList(
+            Artifact.SCOPE_COMPILE,
+            Artifact.SCOPE_PROVIDED,
+            Artifact.SCOPE_RUNTIME,
+            Artifact.SCOPE_SYSTEM
+        );
     }
 
     /**
@@ -435,7 +349,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * @return True if .class files found
      */
     private boolean hasClasses() {
-        return this.listClasses().size() > 0;
+        return !this.listClasses().isEmpty();
     }
 
     /**
@@ -443,11 +357,10 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * @return A Collection of .class files
      */
     private Collection<File> listClasses() {
-        final IOFileFilter filter = FileFilterUtils
-            .suffixFileFilter(".class");
         return FileUtils.listFiles(
-            this.classesDirectory, filter, FileFilterUtils
-                .directoryFileFilter()
+            this.classesDirectory,
+            FileFilterUtils.suffixFileFilter(".class"),
+            FileFilterUtils.directoryFileFilter()
         );
     }
 

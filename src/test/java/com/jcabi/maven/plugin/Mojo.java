@@ -55,6 +55,7 @@ final class Mojo<T extends AbstractMojo> {
     /**
      * Execute it.
      */
+    @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
     public void execute() {
         try {
             final AbstractMojo mojo = this.type.getConstructor().newInstance();

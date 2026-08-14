@@ -10,16 +10,16 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.NotFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -38,7 +38,6 @@ import org.slf4j.impl.StaticLoggerBinder;
     defaultPhase = LifecyclePhase.PREPARE_PACKAGE,
     threadSafe = true
 )
-@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 public final class VersionalizeMojo extends AbstractMojo {
 
     /**
@@ -87,9 +86,8 @@ public final class VersionalizeMojo extends AbstractMojo {
      * @param dir The destination directory
      * @return The text
      */
-    @SuppressWarnings("PMD.ConsecutiveLiteralAppends")
     private String text(final File dir) {
-        final StringBuilder text = new StringBuilder(0)
+        final StringBuilder text = new StringBuilder()
             .append(String.format("Build Number: %s%n", this.buildNumber))
             .append(
                 String.format(
@@ -100,8 +98,9 @@ public final class VersionalizeMojo extends AbstractMojo {
             .append(
                 String.format(
                     "Build Date: %s%n%n",
-                    DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT
-                        .format(new Date())
+                    ZonedDateTime.now().format(
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+                    )
                 )
             );
         for (final String name : VersionalizeMojo.files(dir, "*")) {
@@ -129,12 +128,6 @@ public final class VersionalizeMojo extends AbstractMojo {
             new NotFileFilter(TrueFileFilter.INSTANCE),
             DirectoryFileFilter.DIRECTORY
         );
-        final String name = String.format(
-            "%s-%s-%s.txt",
-            VersionalizeMojo.cleanup(this.project.getGroupId()),
-            VersionalizeMojo.cleanup(this.project.getArtifactId()),
-            VersionalizeMojo.cleanup(this.project.getPackaging())
-        );
         for (final File dir : dirs) {
             if (VersionalizeMojo.files(dir, "*.java").isEmpty()) {
                 continue;
@@ -146,7 +139,7 @@ public final class VersionalizeMojo extends AbstractMojo {
                     src.getCanonicalPath().length() + 1
                 )
             );
-            final File version = new File(ddir, name);
+            final File version = new File(ddir, this.name());
             if (version.getParentFile().mkdirs()) {
                 Logger.info(this, "created dir %s", version.getParentFile());
             }
@@ -156,6 +149,19 @@ public final class VersionalizeMojo extends AbstractMojo {
             );
             Logger.info(this, "File %s added", version);
         }
+    }
+
+    /**
+     * Name of the version file.
+     * @return The file name
+     */
+    private String name() {
+        return String.format(
+            "%s-%s-%s.txt",
+            VersionalizeMojo.cleanup(this.project.getGroupId()),
+            VersionalizeMojo.cleanup(this.project.getArtifactId()),
+            VersionalizeMojo.cleanup(this.project.getPackaging())
+        );
     }
 
     /**
@@ -174,15 +180,23 @@ public final class VersionalizeMojo extends AbstractMojo {
      * @return List of Java file names
      */
     private static Collection<String> files(final File dir, final String mask) {
-        final FileFilter filter = WildcardFileFilter.builder()
-            .setWildcards(mask)
-            .get();
-        final File[] files = dir.listFiles(filter);
+        final File[] files = dir.listFiles(VersionalizeMojo.wildcard(mask));
         final Collection<String> names = new ArrayList<>(files.length);
         for (final File file : files) {
             names.add(file.getName());
         }
         return names;
+    }
+
+    /**
+     * File filter matching the given wildcard mask.
+     * @param mask Mask to use
+     * @return The filter
+     */
+    private static FileFilter wildcard(final String mask) {
+        return WildcardFileFilter.builder()
+            .setWildcards(mask)
+            .get();
     }
 
 }

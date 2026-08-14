@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
  *
  * @since 0.15
  */
-public final class UnwovenClassesTest {
+final class UnwovenClassesTest {
 
     /**
      * Classes directory.
@@ -30,12 +30,12 @@ public final class UnwovenClassesTest {
     private static final String UNWOVEN = "src/test/resources/unwoven";
 
     @BeforeEach
-    public void cleanBefore() throws Exception {
+    void cleanBefore() throws Exception {
         UnwovenClassesTest.deleteResourceDirs();
     }
 
     @AfterEach
-    public void cleanAfter() throws Exception {
+    void cleanAfter() throws Exception {
         UnwovenClassesTest.deleteResourceDirs();
     }
 
@@ -47,12 +47,11 @@ public final class UnwovenClassesTest {
             "process-classes"
         ).copy();
         MatcherAssert.assertThat(
-            new File("src/test/resources/unwoven/MyPojo.txt").exists(),
-            Matchers.is(true)
-        );
-        MatcherAssert.assertThat(
-            new File("src/test/resources/unwoven/MySecondPojo.txt").exists(),
-            Matchers.is(true)
+            "unwoven classes cannot be missing",
+            new File(UnwovenClassesTest.UNWOVEN).list(),
+            Matchers.arrayContainingInAnyOrder(
+                "MyPojo.txt", "MySecondPojo.txt"
+            )
         );
     }
 
@@ -64,14 +63,11 @@ public final class UnwovenClassesTest {
             "process-test-classes"
         ).copy();
         MatcherAssert.assertThat(
-            new File("src/test/resources/unwoven-test/MyPojo.txt").exists(),
-            Matchers.is(true)
-        );
-        MatcherAssert.assertThat(
-            new File(
-                "src/test/resources/unwoven-test/MySecondPojo.txt"
-            ).exists(),
-            Matchers.is(true)
+            "unwoven test classes cannot be missing",
+            new File("src/test/resources/unwoven-test").list(),
+            Matchers.arrayContainingInAnyOrder(
+                "MyPojo.txt", "MySecondPojo.txt"
+            )
         );
     }
 

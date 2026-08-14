@@ -62,9 +62,8 @@ final class UnwovenClasses {
             );
             UnwovenClasses.copyContents(this.classes, this.unwoven);
         } else if ("process-test-classes".equals(this.phase)) {
-            final String suffix = "-test";
             final File tests = new File(
-                this.unwoven.getPath().concat(suffix)
+                this.unwoven.getPath().concat("-test")
             );
             tests.mkdirs();
             Logger.info(

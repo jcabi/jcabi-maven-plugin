@@ -15,7 +15,6 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.project.MavenProject;
 import org.hamcrest.MatcherAssert;
@@ -31,22 +30,21 @@ import org.mockito.Mockito;
  * @since 0.1
  * @checkstyle ExecutableStatementCountCheck (200 lines)
  */
-public final class AjcMojoTest {
+final class AjcMojoTest {
 
     @Test
     @Disabled
-    public void testClassFilesWeaving(@TempDir final Path temp) throws Exception {
+    void testClassFilesWeaving(@TempDir final Path temp) throws Exception {
         final MavenProject project = Mockito.mock(MavenProject.class);
         Mockito.doReturn(Collections.emptyList())
             .when(project).getCompileClasspathElements();
-        final Path temps = temp.resolve("temps");
         final Path classes = temp.resolve("classes");
         final Path javas = temp.resolve("javas");
-        final MavenSession session = Mockito.mock(MavenSession.class);
-        final ArtifactRepository repo = Mockito.mock(ArtifactRepository.class);
-        Mockito.doReturn(temp.resolve("xx").toFile().toString())
-            .when(repo).getBasedir();
-        Mockito.doReturn(repo).when(session).getLocalRepository();
+        final MavenSession session = Mockito.mock(
+            MavenSession.class, Mockito.RETURNS_DEEP_STUBS
+        );
+        Mockito.when(session.getLocalRepository().getBasedir())
+            .thenReturn(temp.resolve("xx").toFile().toString());
         final Path java = javas.resolve("sample/Foo.java");
         java.getParent().toFile().mkdirs();
         Files.write(
@@ -58,16 +56,16 @@ public final class AjcMojoTest {
             ).getBytes(StandardCharsets.UTF_8)
         );
         final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        final StandardJavaFileManager mgr = compiler.getStandardFileManager(
+        try (StandardJavaFileManager mgr = compiler.getStandardFileManager(
             null, Locale.ENGLISH, StandardCharsets.UTF_8
-        );
-        compiler.getTask(
-            null, mgr, null, null, null,
-            mgr.getJavaFileObjectsFromFiles(
-                Collections.singleton(java.toFile())
-            )
-        ).call();
-        mgr.close();
+        )) {
+            compiler.getTask(
+                null, mgr, null, null, null,
+                mgr.getJavaFileObjectsFromFiles(
+                    Collections.singleton(java.toFile())
+                )
+            ).call();
+        }
         final String name = "sample/Foo.class";
         final Path binary = classes.resolve(name);
         FileUtils.copyFile(javas.resolve(name).toFile(), binary.toFile());
@@ -77,9 +75,10 @@ public final class AjcMojoTest {
             .with("session", session)
             .with("classesDirectory", classes.toFile())
             .with("aspectDirectories", new File[0])
-            .with("tempDirectory", temps.toFile())
+            .with("tempDirectory", temp.resolve("temps").toFile())
             .execute();
         MatcherAssert.assertThat(
+            String.format("weaving cannot leave the size at %d", size),
             binary.toFile().length(),
             Matchers.not(Matchers.equalTo(size))
         );
