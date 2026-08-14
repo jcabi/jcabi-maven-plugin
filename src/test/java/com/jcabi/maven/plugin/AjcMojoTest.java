@@ -14,7 +14,6 @@ import javax.tools.JavaCompiler;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.project.MavenProject;
 import org.hamcrest.MatcherAssert;
@@ -26,15 +25,13 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link AjcMojo}.
- *
  * @since 0.1
- * @checkstyle ExecutableStatementCountCheck (200 lines)
  */
 final class AjcMojoTest {
 
     @Test
     @Disabled
-    void testClassFilesWeaving(@TempDir final Path temp) throws Exception {
+    void weavesClassFiles(@TempDir final Path temp) throws Exception {
         final MavenProject project = Mockito.mock(MavenProject.class);
         Mockito.doReturn(Collections.emptyList())
             .when(project).getCompileClasspathElements();
@@ -49,16 +46,19 @@ final class AjcMojoTest {
         java.getParent().toFile().mkdirs();
         Files.write(
             java,
-            StringUtils.join(
-                "package sample;\n",
-                "import com.jcabi.aspects.Immutable;\n",
+            String.join(
+                System.lineSeparator(),
+                "package sample;",
+                "import com.jcabi.aspects.Immutable;",
                 "@Immutable class Foo {}"
             ).getBytes(StandardCharsets.UTF_8)
         );
         final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        try (StandardJavaFileManager mgr = compiler.getStandardFileManager(
-            null, Locale.ENGLISH, StandardCharsets.UTF_8
-        )) {
+        try (
+            StandardJavaFileManager mgr = compiler.getStandardFileManager(
+                null, Locale.ENGLISH, StandardCharsets.UTF_8
+            )
+        ) {
             compiler.getTask(
                 null, mgr, null, null, null,
                 mgr.getJavaFileObjectsFromFiles(
@@ -83,5 +83,4 @@ final class AjcMojoTest {
             Matchers.not(Matchers.equalTo(size))
         );
     }
-
 }

@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link UnwovenClasses}.
- *
  * @since 0.15
  */
 final class UnwovenClassesTest {

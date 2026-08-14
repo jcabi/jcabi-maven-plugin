@@ -4,8 +4,8 @@
  */
 package com.jcabi.maven.plugin;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.project.DefaultProjectBuildingRequest;
@@ -20,7 +20,6 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 /**
  * Files of the dependencies of a project, found in the dependency graph
  * of the project and located in the local repository.
- *
  * @since 0.16
  */
 final class Dependencies {
@@ -91,7 +90,7 @@ final class Dependencies {
     private Collection<String> files(final DependencyNode node,
         final Collection<String> scopes) {
         final Artifact artifact = node.getArtifact();
-        final Collection<String> files = new LinkedList<>();
+        final Collection<String> files = new ArrayList<>(0);
         if (artifact.getScope() == null
             || scopes.contains(artifact.getScope())) {
             if (artifact.getScope() == null) {
@@ -110,5 +109,4 @@ final class Dependencies {
         }
         return files;
     }
-
 }

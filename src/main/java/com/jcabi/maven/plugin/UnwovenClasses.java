@@ -14,7 +14,6 @@ import org.apache.maven.plugin.MojoFailureException;
  * Operations on the unwoven classes, like storing them in a separate
  * location from the woven ones. Unwoven classes are classes which weren't
  * yet weaved by the aspect weaver.
- *
  * @since 0.15
  */
 final class UnwovenClasses {
@@ -40,8 +39,7 @@ final class UnwovenClasses {
      * @param cls Directory where the classes are found
      * @param phs Maven execution phase
      */
-    UnwovenClasses(final File uwvn, final File cls,
-        final String phs) {
+    UnwovenClasses(final File uwvn, final File cls, final String phs) {
         this.unwoven = uwvn;
         this.classes = cls;
         this.phase = phs;
@@ -96,5 +94,4 @@ final class UnwovenClasses {
             );
         }
     }
-
 }

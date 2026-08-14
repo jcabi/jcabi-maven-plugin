@@ -14,7 +14,6 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Mutable mojo builder.
- *
  * @param <T> Type of mojo
  * @since 0.1
  */
@@ -32,7 +31,6 @@ final class Mojo<T extends AbstractMojo> {
 
     /**
      * Ctor.
-     *
      * @param tpe The type
      */
     Mojo(final Class<T> tpe) {
@@ -42,12 +40,11 @@ final class Mojo<T extends AbstractMojo> {
 
     /**
      * Add one more attribute and return self.
-     *
      * @param attr The name
      * @param value The value
      * @return Itself
      */
-    public Mojo<T> with(final String attr, final Object value) {
+    Mojo<T> with(final String attr, final Object value) {
         this.attrs.put(attr, value);
         return this;
     }
@@ -56,7 +53,7 @@ final class Mojo<T extends AbstractMojo> {
      * Execute it.
      */
     @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
-    public void execute() {
+    void execute() {
         try {
             final AbstractMojo mojo = this.type.getConstructor().newInstance();
             for (final Map.Entry<String, Object> ent : this.attrs.entrySet()) {
@@ -98,5 +95,4 @@ final class Mojo<T extends AbstractMojo> {
         }
         return field;
     }
-
 }

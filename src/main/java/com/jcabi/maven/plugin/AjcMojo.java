@@ -8,9 +8,9 @@ import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.commons.io.FileUtils;
@@ -39,7 +39,6 @@ import org.slf4j.impl.StaticLoggerBinder;
 
 /**
  * AspectJ compile CLASS files.
- *
  * @see <a href="http://www.eclipse.org/aspectj/doc/next/devguide/ajc-ref.html">AJC compiler manual</a>
  * @since 0.7.16
  */
@@ -49,7 +48,6 @@ import org.slf4j.impl.StaticLoggerBinder;
     threadSafe = true,
     requiresDependencyResolution = ResolutionScope.COMPILE
 )
-@SuppressWarnings("PMD.TooManyMethods")
 public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**
@@ -174,7 +172,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         )) {
             Logger.warn(
                 this,
-                // @checkstyle LineLength (1 line)
                 "Not executing AJC as the project is not a Java classpath-capable package"
             );
             return;
@@ -195,7 +192,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         } else {
             Logger.warn(
                 this,
-                // @checkstyle LineLength (1 line)
                 "Not executing AJC as there is no .class file or source roots file."
             );
         }
@@ -203,7 +199,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**
      * Process classes and source roots files with AJC.
-     *
      * @throws MojoFailureException If AJC failed to process files
      * @throws IOException If fails
      */
@@ -261,7 +256,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         }
         Logger.info(
             this,
-            // @checkstyle LineLength (1 line)
             "ajc result: %d file(s) processed, %d pointcut(s) woven, %d error(s), %d warning(s)",
             AjcMojo.files(this.classesDirectory).size(),
             mholder.numMessages(IMessage.WEAVEINFO, false),
@@ -284,7 +278,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         } else {
             scps = Arrays.asList(this.scopes);
         }
-        final Collection<String> elements = new LinkedList<>(
+        final Collection<String> elements = new ArrayList<>(
             new Dependencies(
                 this.container,
                 this.project,
@@ -297,7 +291,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**
      * Default scopes.
-     * @return List of scopes.
+     * @return List of scopes
      */
     private static Collection<String> scope() {
         return Arrays.asList(
@@ -313,11 +307,11 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * @return Classpath
      */
     private String aspectpath() {
-        return new StringBuilder(0)
-            .append(StringUtils.join(this.classpath(), AjcMojo.SEP))
-            .append(AjcMojo.SEP)
-            .append(System.getProperty("java.class.path"))
-            .toString();
+        return String.join(
+            AjcMojo.SEP,
+            StringUtils.join(this.classpath(), AjcMojo.SEP),
+            System.getProperty("java.class.path")
+        );
     }
 
     /**
@@ -379,7 +373,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * @return List of them
      */
     private static Collection<File> files(final File dir) {
-        final Collection<File> files = new LinkedList<>();
+        final Collection<File> files = new ArrayList<>(0);
         final Collection<File> all = FileUtils.listFiles(
             dir, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE
         );
@@ -396,8 +390,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
      * <b>unwovenClassesDir</b>.
      * @throws MojoFailureException If something goes wrong
      */
-    private void copyUnwovenClasses()
-        throws MojoFailureException {
+    private void copyUnwovenClasses() throws MojoFailureException {
         if (this.hasClasses()) {
             new UnwovenClasses(
                 this.unwovenClassesDir,
@@ -416,10 +409,10 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**
      * Message holder.
-     *
      * @since 0.1
      */
     private static final class MsgHolder implements IMessageHolder {
+
         /**
          * All messages seen so far.
          */
@@ -502,5 +495,4 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
             assert kind != null;
         }
     }
-
 }

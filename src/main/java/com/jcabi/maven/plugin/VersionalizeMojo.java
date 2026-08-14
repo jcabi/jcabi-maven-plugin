@@ -10,6 +10,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,7 +31,6 @@ import org.slf4j.impl.StaticLoggerBinder;
 
 /**
  * Versionalize Java packages.
- *
  * @since 0.7.16
  */
 @Mojo(
@@ -87,22 +87,16 @@ public final class VersionalizeMojo extends AbstractMojo {
      * @return The text
      */
     private String text(final File dir) {
-        final StringBuilder text = new StringBuilder()
-            .append(String.format("Build Number: %s%n", this.buildNumber))
-            .append(
-                String.format(
-                    "Project Version: %s%n",
-                    this.project.getVersion()
+        final StringBuilder text = new StringBuilder(
+            String.format(
+                "Build Number: %s%nProject Version: %s%nBuild Date: %s%n%n",
+                this.buildNumber,
+                this.project.getVersion(),
+                ZonedDateTime.now(ZoneOffset.UTC).format(
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
                 )
             )
-            .append(
-                String.format(
-                    "Build Date: %s%n%n",
-                    ZonedDateTime.now().format(
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
-                    )
-                )
-            );
+        );
         for (final String name : VersionalizeMojo.files(dir, "*")) {
             final File file = new File(dir, name);
             if (file.isFile()) {
@@ -198,5 +192,4 @@ public final class VersionalizeMojo extends AbstractMojo {
             .setWildcards(mask)
             .get();
     }
-
 }

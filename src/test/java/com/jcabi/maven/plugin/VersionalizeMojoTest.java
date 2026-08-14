@@ -14,7 +14,6 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link VersionalizeMojo}.
- *
  * @since 0.1
  */
 final class VersionalizeMojoTest {
@@ -37,5 +36,4 @@ final class VersionalizeMojoTest {
             Matchers.is(false)
         );
     }
-
 }
