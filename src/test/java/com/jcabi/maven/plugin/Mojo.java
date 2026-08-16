@@ -31,10 +31,10 @@ final class Mojo<T extends AbstractMojo> {
 
     /**
      * Ctor.
-     * @param tpe The type
+     * @param kind The type
      */
-    Mojo(final Class<T> tpe) {
-        this.type = tpe;
+    Mojo(final Class<T> kind) {
+        this.type = kind;
         this.attrs = new HashMap<>(0);
     }
 
