@@ -284,10 +284,6 @@
             <version>0.30.13</version>
             <configuration>
               <excludes combine.children="append">
-                <exclude>checkstyle:/src/it.*</exclude>
-                <exclude>pmd:/src/it.*</exclude>
-                <exclude>xml:/src/it/settings.xml</exclude>
-                <exclude>xml:/src/test/resources/.*</exclude>
                 <exclude>duplicatefinder:.*</exclude>
               </excludes>
             </configuration>
