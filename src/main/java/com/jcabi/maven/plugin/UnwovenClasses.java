@@ -72,13 +72,6 @@ final class UnwovenClasses {
         }
     }
 
-    /**
-     * Copies contents from one dir to another.
-     * @param from From directory
-     * @param dest Destination directory
-     * @throws MojoFailureException If something goes wrong while
-     *  cleaning the destination director or copying files to it
-     */
     private static void copyContents(
         final File from, final File dest) throws MojoFailureException {
         try {

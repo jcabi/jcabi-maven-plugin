@@ -81,11 +81,6 @@ public final class VersionalizeMojo extends AbstractMojo {
         }
     }
 
-    /**
-     * Create and return a text of the version file.
-     * @param dir The destination directory
-     * @return The text
-     */
     private String text(final File dir) {
         final StringBuilder text = new StringBuilder(
             String.format(
@@ -109,12 +104,6 @@ public final class VersionalizeMojo extends AbstractMojo {
         return text.toString();
     }
 
-    /**
-     * Versionalize packages from source to dest.
-     * @param src Source directory
-     * @param dest Destination
-     * @throws IOException If some IO problem
-     */
     private void versionalize(final File src, final File dest)
         throws IOException {
         final Collection<File> dirs = FileUtils.listFilesAndDirs(
@@ -145,10 +134,6 @@ public final class VersionalizeMojo extends AbstractMojo {
         }
     }
 
-    /**
-     * Name of the version file.
-     * @return The file name
-     */
     private String name() {
         return String.format(
             "%s-%s-%s.txt",
@@ -158,21 +143,10 @@ public final class VersionalizeMojo extends AbstractMojo {
         );
     }
 
-    /**
-     * Clean the text.
-     * @param text The text
-     * @return Clean version of it
-     */
     private static String cleanup(final String text) {
         return text.replaceAll("[^_a-z0-9\\-]", "-");
     }
 
-    /**
-     * All Java files in the directory.
-     * @param dir The directory
-     * @param mask Mask to use
-     * @return List of Java file names
-     */
     private static Collection<String> files(final File dir, final String mask) {
         final File[] files = dir.listFiles(VersionalizeMojo.wildcard(mask));
         final Collection<String> names = new ArrayList<>(files.length);
@@ -182,11 +156,6 @@ public final class VersionalizeMojo extends AbstractMojo {
         return names;
     }
 
-    /**
-     * File filter matching the given wildcard mask.
-     * @param mask Mask to use
-     * @return The filter
-     */
     private static FileFilter wildcard(final String mask) {
         return WildcardFileFilter.builder()
             .setWildcards(mask)

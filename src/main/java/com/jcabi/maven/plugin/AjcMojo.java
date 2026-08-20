@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -197,17 +196,12 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         }
     }
 
-    /**
-     * Process classes and source roots files with AJC.
-     * @throws MojoFailureException If AJC failed to process files
-     * @throws IOException If fails
-     */
     private void executeAjc() throws MojoFailureException, IOException {
         if (this.tempDirectory.mkdirs()) {
             Logger.info(this, "Created temp dir %s", this.tempDirectory);
         }
         final Main main = new Main();
-        final IMessageHolder mholder = new AjcMojo.MsgHolder();
+        final IMessageHolder mholder = new MsgHolder();
         main.run(
             new String[] {
                 "-Xset:avoidFinal=true",
@@ -267,10 +261,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         }
     }
 
-    /**
-     * Get classpath for AJC.
-     * @return Classpath
-     */
     private Collection<String> classpath() {
         final Collection<String> scps;
         if (this.scopes == null) {
@@ -289,10 +279,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         return elements;
     }
 
-    /**
-     * Default scopes.
-     * @return List of scopes
-     */
     private static Collection<String> scope() {
         return Arrays.asList(
             Artifact.SCOPE_COMPILE,
@@ -302,10 +288,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         );
     }
 
-    /**
-     * Get locations of all aspect libraries for AJC.
-     * @return Classpath
-     */
     private String aspectpath() {
         return String.join(
             AjcMojo.SEP,
@@ -314,11 +296,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         );
     }
 
-    /**
-     * Get locations of all source roots (with aspects in source form).
-     * @return Directories separated
-     * @throws IOException If fails
-     */
     private String sourceroots() throws IOException {
         final String path;
         if (this.aspectDirectories == null
@@ -338,18 +315,10 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         return path;
     }
 
-    /**
-     * Check if the project contains .class files.
-     * @return True if .class files found
-     */
     private boolean hasClasses() {
         return !this.listClasses().isEmpty();
     }
 
-    /**
-     * List of all .class files from <b>classesDirectory</b>.
-     * @return A Collection of .class files
-     */
     private Collection<File> listClasses() {
         return FileUtils.listFiles(
             this.classesDirectory,
@@ -358,20 +327,11 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         );
     }
 
-    /**
-     * Check if the project contains source roots files.
-     * @return True if {@linkplain #aspectDirectories} contain files
-     */
     private boolean hasSourceroots() {
         return this.aspectDirectories != null
             && this.aspectDirectories.length > 0;
     }
 
-    /**
-     * Find all files in the directory.
-     * @param dir The directory
-     * @return List of them
-     */
     private static Collection<File> files(final File dir) {
         final Collection<File> files = new ArrayList<>(0);
         final Collection<File> all = FileUtils.listFiles(
@@ -385,11 +345,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         return files;
     }
 
-    /**
-     * Copy the unwoven classes from <b>classesDirectory</b> to
-     * <b>unwovenClassesDir</b>.
-     * @throws MojoFailureException If something goes wrong
-     */
     private void copyUnwovenClasses() throws MojoFailureException {
         if (this.hasClasses()) {
             new UnwovenClasses(
@@ -404,95 +359,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
                 this.classesDirectory,
                 this.unwovenClassesDir
             );
-        }
-    }
-
-    /**
-     * Message holder.
-     * @since 0.1
-     */
-    private static final class MsgHolder implements IMessageHolder {
-
-        /**
-         * All messages seen so far.
-         */
-        private final transient Collection<IMessage> messages =
-            new CopyOnWriteArrayList<>();
-
-        @Override
-        public boolean hasAnyMessage(final IMessage.Kind kind,
-            final boolean greater) {
-            boolean has = false;
-            for (final IMessage msg : this.messages) {
-                has = msg.getKind().equals(kind) || greater
-                    && IMessage.Kind.COMPARATOR
-                    .compare(msg.getKind(), kind) > 0;
-                if (has) {
-                    break;
-                }
-            }
-            return has;
-        }
-
-        @Override
-        public int numMessages(final IMessage.Kind kind,
-            final boolean greater) {
-            int num = 0;
-            for (final IMessage msg : this.messages) {
-                final boolean has = msg.getKind().equals(kind) || greater
-                    && IMessage.Kind.COMPARATOR
-                    .compare(msg.getKind(), kind) > 0;
-                if (has) {
-                    ++num;
-                }
-            }
-            return num;
-        }
-
-        @Override
-        public IMessage[] getMessages(final IMessage.Kind kind,
-            final boolean greater) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public List<IMessage> getUnmodifiableListView() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void clearMessages() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public boolean handleMessage(final IMessage msg) {
-            if (msg.getKind().equals(IMessage.ERROR)
-                || msg.getKind().equals(IMessage.FAIL)
-                || msg.getKind().equals(IMessage.ABORT)) {
-                Logger.error(AjcMojo.class, msg.getMessage());
-            } else if (msg.getKind().equals(IMessage.WARNING)) {
-                Logger.warn(AjcMojo.class, msg.getMessage());
-            } else {
-                Logger.debug(AjcMojo.class, msg.getMessage());
-            }
-            this.messages.add(msg);
-            return true;
-        }
-
-        @Override
-        public boolean isIgnoring(final IMessage.Kind kind) {
-            return false;
-        }
-
-        @Override
-        public void dontIgnore(final IMessage.Kind kind) {
-            assert kind != null;
-        }
-
-        @Override
-        public void ignore(final IMessage.Kind kind) {
-            assert kind != null;
         }
     }
 }

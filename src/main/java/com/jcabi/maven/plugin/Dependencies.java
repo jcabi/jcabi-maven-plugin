@@ -81,12 +81,6 @@ final class Dependencies {
         }
     }
 
-    /**
-     * Files of the given node and of all its children.
-     * @param node Node to traverse
-     * @param scopes Scopes to take into account
-     * @return Collection of file names
-     */
     private Collection<String> files(final DependencyNode node,
         final Collection<String> scopes) {
         final Artifact artifact = node.getArtifact();
