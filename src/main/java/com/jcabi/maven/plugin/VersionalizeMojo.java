@@ -31,6 +31,7 @@ import org.slf4j.impl.StaticLoggerBinder;
 
 /**
  * Versionalize Java packages.
+ *
  * @since 0.7.16
  */
 @Mojo(
@@ -48,6 +49,7 @@ public final class VersionalizeMojo extends AbstractMojo {
 
     /**
      * Build number.
+     *
      * @checkstyle MemberNameCheck (10 lines)
      */
     @Parameter(property = "buildNumber")

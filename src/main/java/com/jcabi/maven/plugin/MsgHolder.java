@@ -13,6 +13,7 @@ import org.aspectj.bridge.IMessageHolder;
 
 /**
  * Message holder.
+ *
  * @since 0.1
  */
 final class MsgHolder implements IMessageHolder {

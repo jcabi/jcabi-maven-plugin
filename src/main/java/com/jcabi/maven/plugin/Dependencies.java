@@ -20,6 +20,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 /**
  * Files of the dependencies of a project, found in the dependency graph
  * of the project and located in the local repository.
+ *
  * @since 0.16
  */
 final class Dependencies {
@@ -41,6 +42,7 @@ final class Dependencies {
 
     /**
      * Ctor.
+     *
      * @param cnt Plexus container
      * @param prj Maven project
      * @param ssn Maven session
@@ -54,6 +56,7 @@ final class Dependencies {
 
     /**
      * Files of all dependencies within the given scopes.
+     *
      * @param scopes Scopes to take into account
      * @return Collection of file names
      */

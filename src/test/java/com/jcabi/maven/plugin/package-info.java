@@ -5,6 +5,7 @@
 
 /**
  * Supplementary Maven plugin, tests.
+ *
  * @since 0.7.16
  */
 package com.jcabi.maven.plugin;

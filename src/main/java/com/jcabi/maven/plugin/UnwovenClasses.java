@@ -14,6 +14,7 @@ import org.apache.maven.plugin.MojoFailureException;
  * Operations on the unwoven classes, like storing them in a separate
  * location from the woven ones. Unwoven classes are classes which weren't
  * yet weaved by the aspect weaver.
+ *
  * @since 0.15
  */
 final class UnwovenClasses {
@@ -35,6 +36,7 @@ final class UnwovenClasses {
 
     /**
      * Constructor.
+     *
      * @param uwvn Dir where unwoven classes go
      * @param cls Directory where the classes are found
      * @param phs Maven execution phase
@@ -48,6 +50,7 @@ final class UnwovenClasses {
     /**
      * Perform the copy. Unwoven classes go in <b>unwoven</b> directory, while
      * unwoven test classes go in <b>unwoven</b> + -test directory.
+     *
      * @throws MojoFailureException If there is an IOException when
      *  copying the files
      */

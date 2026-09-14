@@ -25,6 +25,7 @@ import org.mockito.Mockito;
 
 /**
  * Test case for {@link AjcMojo}.
+ *
  * @since 0.1
  */
 final class AjcMojoTest {

@@ -38,6 +38,7 @@ import org.slf4j.impl.StaticLoggerBinder;
 
 /**
  * AspectJ compile CLASS files.
+ *
  * @see <a href="http://www.eclipse.org/aspectj/doc/next/devguide/ajc-ref.html">AJC compiler manual</a>
  * @since 0.7.16
  */
@@ -74,6 +75,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**
      * Compiled directory.
+     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(defaultValue = "${project.build.outputDirectory}")
@@ -81,6 +83,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**
      * Directory in which uwoven classes are copied.
+     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(defaultValue = "${project.build.directory}/unwoven")
@@ -88,6 +91,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**
      * Disables the copy of unwoven files to unwovenClassesDir.
+     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(defaultValue = "false")
@@ -95,6 +99,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**
      * Directories with aspects.
+     *
      * @checkstyle MemberNameCheck (6 lines)
      */
     @Parameter
@@ -102,6 +107,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**
      * Temporary directory.
+     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(defaultValue = "${project.build.directory}/jcabi-ajc")
@@ -132,6 +138,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
 
     /**
      * Project classpath.
+     *
      * @checkstyle MemberNameCheck (7 lines)
      */
     @Parameter(

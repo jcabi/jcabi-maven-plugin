@@ -14,6 +14,7 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Mutable mojo builder.
+ *
  * @param <T> Type of mojo
  * @since 0.1
  */
@@ -31,6 +32,7 @@ final class Mojo<T extends AbstractMojo> {
 
     /**
      * Ctor.
+     *
      * @param kind The type
      */
     Mojo(final Class<T> kind) {
@@ -40,6 +42,7 @@ final class Mojo<T extends AbstractMojo> {
 
     /**
      * Add one more attribute and return self.
+     *
      * @param attr The name
      * @param value The value
      * @return Itself
