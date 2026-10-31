@@ -55,7 +55,7 @@
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjrt</artifactId>
       <scope>compile</scope>
-      <version>1.9.21</version>
+      <version>1.9.26</version>
     </dependency>
     <dependency>
       <groupId>javax.validation</groupId>
@@ -66,7 +66,7 @@
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>6.2.5.Final</version>
+      <version>6.2.6.Final</version>
       <scope>test</scope>
     </dependency>
     <dependency>
