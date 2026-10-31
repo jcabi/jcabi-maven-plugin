@@ -90,9 +90,9 @@ final class Dependencies {
         final Collection<String> files = new ArrayList<>(0);
         if (artifact.getScope() == null
             || scopes.contains(artifact.getScope())) {
-            if (artifact.getScope() == null) {
+            if (artifact.getScope() == null && artifact.getFile() != null) {
                 files.add(artifact.getFile().toString());
-            } else {
+            } else if (artifact.getScope() != null) {
                 files.add(
                     this.session.getLocalRepository().find(artifact).getFile()
                         .toString()
