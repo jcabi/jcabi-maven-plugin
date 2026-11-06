@@ -96,9 +96,12 @@ Weave Binaries with AspectJ Aspects after APT Processing
 </execution>
 +--
 
-  Another alternative is {{{http://mojo.codehaus.org/aspectj-maven-plugin/}<<<aspectj-maven-plugin>>>}},
-  but it can't weave binaries,
-  as {{{http://stackoverflow.com/questions/3660547/apt-and-aop-in-the-same-project-using-maven}explained here}}.
+  Another alternative is the
+  {{{https://github.com/dev-aspectj/aspectj-maven-plugin}AspectJ.dev Maven Plugin}},
+  which supports binary weaving of
+  {{{https://dev-aspectj.github.io/aspectj-maven-plugin/examples/weaveJars.html}classes in JARs}}
+  and
+  {{{https://dev-aspectj.github.io/aspectj-maven-plugin/examples/weaveDirectories.html}classes in directories}}.
 
 * Cutting Edge Version
 
