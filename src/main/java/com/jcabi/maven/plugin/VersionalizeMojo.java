@@ -146,7 +146,7 @@ public final class VersionalizeMojo extends AbstractMojo {
     }
 
     private static String cleanup(final String text) {
-        return text.replaceAll("[^_a-z0-9\\-]", "-");
+        return text.replaceAll("[^_a-zA-Z0-9\\-]", "-");
     }
 
     private static Collection<String> files(final File dir, final String mask) {
