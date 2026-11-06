@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"com.jcabi.maven.plugin","l":"AjcMojo"},{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.jcabi.maven.plugin","l":"VersionalizeMojo"}];updateSearchResults();
