@@ -173,15 +173,27 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
     @Override
     public void execute() throws MojoFailureException {
         StaticLoggerBinder.getSingleton().setMavenLog(this.getLog());
-        if (!"java".equalsIgnoreCase(
+        if ("java".equalsIgnoreCase(
             this.project.getArtifact().getArtifactHandler().getLanguage()
         )) {
+            if (this.mark().stale()) {
+                this.weave();
+            } else {
+                Logger.info(
+                    this,
+                    "Not executing AJC as nothing in %s changed since the previous weave",
+                    this.classesDirectory
+                );
+            }
+        } else {
             Logger.warn(
                 this,
                 "Not executing AJC as the project is not a Java classpath-capable package"
             );
-            return;
         }
+    }
+
+    private void weave() throws MojoFailureException {
         if (this.classesDirectory.mkdirs()) {
             Logger.info(this, "Created classes dir %s", this.classesDirectory);
         }
@@ -207,6 +219,7 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         if (this.tempDirectory.mkdirs()) {
             Logger.info(this, "Created temp dir %s", this.tempDirectory);
         }
+        this.mark().erase();
         final Main main = new Main();
         final IMessageHolder mholder = new MsgHolder();
         main.run(
@@ -266,6 +279,19 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
         if (mholder.hasAnyMessage(IMessage.ERROR, true)) {
             throw new MojoFailureException("AJC failed, see log above");
         }
+        this.mark().touch();
+    }
+
+    private Mark mark() {
+        final Collection<File> dirs = new ArrayList<>(1);
+        dirs.add(this.classesDirectory);
+        if (this.aspectDirectories != null) {
+            dirs.addAll(Arrays.asList(this.aspectDirectories));
+        }
+        return new Mark(
+            new File(this.tempDirectory, "jcabi-ajc.done"),
+            dirs.toArray(new File[0])
+        );
     }
 
     private Collection<String> classpath() {
