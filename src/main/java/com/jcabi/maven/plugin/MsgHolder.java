@@ -5,7 +5,9 @@
 package com.jcabi.maven.plugin;
 
 import com.jcabi.log.Logger;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.aspectj.bridge.IMessage;
@@ -61,7 +63,7 @@ final class MsgHolder implements IMessageHolder {
 
     @Override
     public List<IMessage> getUnmodifiableListView() {
-        throw new UnsupportedOperationException();
+        return Collections.unmodifiableList(new ArrayList<>(this.messages));
     }
 
     @Override

@@ -7,11 +7,15 @@ package com.jcabi.maven.plugin;
 import com.jcabi.log.Logger;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -244,8 +248,6 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
                 "-encoding",
                 "UTF-8",
                 "-time",
-                "-log",
-                this.log,
                 "-showWeaveInfo",
                 "-warn:constructorName",
                 "-warn:packageDefaultMethod",
@@ -258,6 +260,15 @@ public final class AjcMojo extends AbstractMojo implements Contextualizable {
                 "-warn:assertIdentifier",
             },
             mholder
+        );
+        Files.write(
+            Paths.get(this.log),
+            mholder.getUnmodifiableListView().stream()
+                .map(IMessage::toString)
+                .collect(Collectors.toList()),
+            StandardCharsets.UTF_8,
+            StandardOpenOption.CREATE,
+            StandardOpenOption.APPEND
         );
         try {
             FileUtils.copyDirectory(this.tempDirectory, this.classesDirectory);
