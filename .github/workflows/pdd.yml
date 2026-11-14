@@ -15,5 +15,5 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v5
-      - uses: volodya-lombrozo/pdd-action@master
+      - uses: actions/checkout@v7
+      - uses: volodya-lombrozo/pdd-action@69842b56627431c5f232f5ea2dc2fca82f409c54  # master (no releases)
